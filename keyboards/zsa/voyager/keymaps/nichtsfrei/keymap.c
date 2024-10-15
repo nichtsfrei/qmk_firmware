@@ -76,10 +76,8 @@ const uint16_t PROGMEM combo_l_num[] = {KC_J, KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM combo_l_num_b[] = {KC_7, KC_8, KC_9, COMBO_END};
 const uint16_t PROGMEM combo_l_sym[] = {KC_S, KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM combo_l_sym_b[] = {KC_PGUP, KC_PGDN, KC_HOME, COMBO_END};
-const uint16_t PROGMEM combo_l_fun[] = {KC_J, KC_K, KC_L, KC_SEMICOLON, COMBO_END};
-const uint16_t PROGMEM combo_l_fun_b[] = {KC_F7, KC_F8, KC_F9, KC_F10, COMBO_END};
-const uint16_t PROGMEM combo_l_mse[] = {KC_A, KC_S, KC_D, KC_F, COMBO_END};
-const uint16_t PROGMEM combo_l_mse_b[] = {QK_MOUSE_BUTTON_1, QK_MOUSE_BUTTON_2, QK_MOUSE_BUTTON_3, QK_MOUSE_BUTTON_4, COMBO_END};
+const uint16_t PROGMEM combo_l_fun[] = {TAB, ENTER, COMBO_END};
+const uint16_t PROGMEM combo_l_mse[] = {TAB, BSPC, COMBO_END};
 
 
 const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, KC_SEMICOLON, COMBO_END};
@@ -95,9 +93,7 @@ combo_t key_combos[] = {
     COMBO(combo_l_sym, TG(2)),
     COMBO(combo_l_sym_b, TG(2)),
     COMBO(combo_l_fun, TG(3)),
-    COMBO(combo_l_fun_b, TG(3)),
     COMBO(combo_l_mse, TG(4)),
-    COMBO(combo_l_mse_b, TG(4)),
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_a_scolon, KC_ENTER),
     COMBO(combo_d_h, KC_BSPC),
