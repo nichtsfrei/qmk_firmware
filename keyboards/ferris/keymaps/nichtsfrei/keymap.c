@@ -56,12 +56,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // clang-format on
 
-const uint16_t PROGMEM combo_l_num[] = {KC_J, KC_K, KC_L, COMBO_END};
-const uint16_t PROGMEM combo_l_num_b[] = {KC_7, KC_8, KC_9, COMBO_END};
-const uint16_t PROGMEM combo_l_sym[] = {KC_S, KC_D, KC_F, COMBO_END};
-const uint16_t PROGMEM combo_l_sym_b[] = {KC_PGUP, KC_PGDN, KC_HOME, COMBO_END};
 const uint16_t PROGMEM combo_l_fun[] = {TAB, ENTER, COMBO_END};
 const uint16_t PROGMEM combo_l_mse[] = {TAB, BSPC, COMBO_END};
+const uint16_t PROGMEM combo_l_num[] = {SPACE, ENTER, COMBO_END};
+const uint16_t PROGMEM combo_l_sym[] = {SPACE, BSPC, COMBO_END};
 
 
 const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, KC_SEMICOLON, COMBO_END};
@@ -72,11 +70,9 @@ const uint16_t PROGMEM combo_minus[] = {KC_SEMICOLON, KC_SLASH, COMBO_END};
 
 const uint16_t PROGMEM combo_space_spc_enter[] = {SPACE, ENTER, COMBO_END};
 combo_t key_combos[] = {
-    COMBO(combo_l_num, TG(1)),
-    COMBO(combo_l_num_b, TG(1)),
-    COMBO(combo_l_sym, TG(2)),
-    COMBO(combo_l_sym_b, TG(2)),
-    COMBO(combo_l_fun, TG(3)),
+    COMBO(combo_l_num, OSL(1)),
+    COMBO(combo_l_sym, OSL(2)),
+    COMBO(combo_l_fun, OSL(3)),
     COMBO(combo_l_mse, TG(4)),
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_a_scolon, KC_ENTER),
