@@ -55,30 +55,61 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // clang-format on
-
 const uint16_t PROGMEM combo_l_fun[] = {TAB, ENTER, COMBO_END};
 const uint16_t PROGMEM combo_l_mse[] = {TAB, BSPC, COMBO_END};
 const uint16_t PROGMEM combo_l_num[] = {SPACE, ENTER, COMBO_END};
 const uint16_t PROGMEM combo_l_sym[] = {SPACE, BSPC, COMBO_END};
 
+const uint16_t PROGMEM combo_a_z[]            = {KC_A, KC_Z, COMBO_END};
+const uint16_t PROGMEM combo_s_x[]            = {KC_S, KC_X, COMBO_END};
+const uint16_t PROGMEM combo_d_c[]            = {KC_D, KC_C, COMBO_END};
+const uint16_t PROGMEM combo_f_v[]            = {KC_F, KC_V, COMBO_END};
+const uint16_t PROGMEM combo_g_b[]            = {KC_G, KC_B, COMBO_END};
+const uint16_t PROGMEM combo_h_n[]            = {KC_H, KC_N, COMBO_END};
+const uint16_t PROGMEM combo_j_m[]            = {KC_J, KC_M, COMBO_END};
+const uint16_t PROGMEM combo_k_comma[]        = {KC_K, KC_COMMA, COMBO_END};
+const uint16_t PROGMEM combo_l_period[]       = {KC_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_semicolon_slah[] = {KC_SEMICOLON, KC_SLASH, COMBO_END};
+
+const uint16_t PROGMEM combo_semicolon_p[] = {KC_SEMICOLON, KC_P, COMBO_END};
+const uint16_t PROGMEM combo_l_o[]         = {KC_L, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_k_i[]         = {KC_K, KC_I, COMBO_END};
+const uint16_t PROGMEM combo_y_u[]         = {KC_Y, KC_U, COMBO_END};
+const uint16_t PROGMEM combo_j_u[]         = {KC_J, KC_U, COMBO_END};
+const uint16_t PROGMEM combo_h_y[]         = {KC_H, KC_Y, COMBO_END};
+const uint16_t PROGMEM combo_a_q[]         = {KC_A, KC_Q, COMBO_END};
 
 const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, KC_SEMICOLON, COMBO_END};
 const uint16_t PROGMEM combo_a_scolon[] = {KC_A, KC_SEMICOLON, COMBO_END};
 const uint16_t PROGMEM combo_d_h[]      = {KC_D, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_d_l[]      = {KC_D, KC_L, COMBO_END};
-const uint16_t PROGMEM combo_minus[] = {KC_SEMICOLON, KC_SLASH, COMBO_END};
 
-const uint16_t PROGMEM combo_space_spc_enter[] = {SPACE, ENTER, COMBO_END};
 combo_t key_combos[] = {
-    COMBO(combo_l_num, OSL(1)),
-    COMBO(combo_l_sym, OSL(2)),
-    COMBO(combo_l_fun, OSL(3)),
+    COMBO(combo_l_num, TG(1)),
+    COMBO(combo_l_sym, TG(2)),
+    COMBO(combo_l_fun, TG(3)),
     COMBO(combo_l_mse, TG(4)),
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_a_scolon, KC_ENTER),
     COMBO(combo_d_h, KC_BSPC),
     COMBO(combo_d_l, KC_DELETE),
-    COMBO(combo_minus, KC_MINUS), // very useful to not have to switch layer
-    COMBO(combo_space_spc_enter, QK_CAPS_WORD_TOGGLE),
-};
 
+    COMBO(combo_semicolon_p, KC_EQUAL),
+    COMBO(combo_l_o, KC_MINUS),
+    COMBO(combo_k_i, KC_QUOTE),
+    COMBO(combo_j_u, KC_BACKSLASH),
+    COMBO(combo_y_u, KC_LEFT_BRACKET),
+    COMBO(combo_h_y, KC_RIGHT_BRACKET),
+    COMBO(combo_a_q, KC_GRAVE),
+
+    COMBO(combo_a_z, KC_1),
+    COMBO(combo_s_x, KC_2),
+    COMBO(combo_d_c, KC_3),
+    COMBO(combo_f_v, KC_4),
+    COMBO(combo_g_b, KC_5),
+    COMBO(combo_h_n, KC_6),
+    COMBO(combo_j_m, KC_7),
+    COMBO(combo_k_comma, KC_8),
+    COMBO(combo_l_period, KC_9),
+    COMBO(combo_semicolon_slah, KC_0),
+};
