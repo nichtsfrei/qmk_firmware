@@ -1,5 +1,7 @@
 #include <stdint.h>
+#include "action_layer.h"
 #include "keycodes.h"
+#include "raw_hid.h"
 #include QMK_KEYBOARD_H
 #include "version.h"
 
@@ -103,10 +105,10 @@ const uint16_t PROGMEM combo_d_h[]      = {KC_D, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_d_l[]      = {KC_D, KC_L, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(combo_l_num, TG(1)),
-    COMBO(combo_l_sym, TG(2)),
-    COMBO(combo_l_fun, TG(3)),
-    COMBO(combo_l_mse, TG(4)),
+    COMBO(combo_l_num, KC_NO), // 0
+    COMBO(combo_l_sym, KC_NO),
+    COMBO(combo_l_fun, KC_NO),
+    COMBO(combo_l_mse, KC_NO), // 3
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_a_scolon, KC_ENTER),
     COMBO(combo_d_h, KC_BSPC),
@@ -131,6 +133,17 @@ combo_t key_combos[] = {
     COMBO(combo_l_period, KC_9),
     COMBO(combo_semicolon_slah, KC_0),
 };
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    if (combo_index >= 0 && combo_index <= 3 && pressed) {
+        if (get_highest_layer(layer_state) == combo_index + 1) {
+            layer_move(0);
+        } else {
+            layer_move(combo_index + 1);
+        }
+        
+    }
+}
 
 extern rgb_config_t rgb_matrix_config;
 
@@ -283,4 +296,26 @@ bool rgb_matrix_indicators_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
+}
+
+static layer_state_t send_state(layer_state_t state) {
+    uint8_t data[32] = {0};
+    data[0] = 'L';
+    data[1] = 1;
+    data[31] = get_highest_layer(state);
+    raw_hid_send(data, 32);
+    return state;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    return send_state(state);
+}
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+    return send_state(state);
+}
+
+void raw_hid_receive(uint8_t *data, uint8_t length) {
+    if(data[0] == 'L') {
+        send_state(layer_state);
+    }
 }
