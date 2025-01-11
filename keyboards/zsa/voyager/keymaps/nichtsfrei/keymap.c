@@ -136,10 +136,15 @@ combo_t key_combos[] = {
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
     if (combo_index >= 0 && combo_index <= 3 && pressed) {
-        if (get_highest_layer(layer_state) == combo_index + 1) {
-            layer_move(0);
+        if (IS_LAYER_ON(combo_index + 1)) {
+            layer_clear();
         } else {
-            layer_move(combo_index + 1);
+            // when triggering to
+            // with layer_move(2)
+            // it got confused and sent KC_NO.
+            // Therefore we clear and enable the specific layer.
+            layer_clear();
+            layer_on(combo_index + 1);
         }
         
     }
