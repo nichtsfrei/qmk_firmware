@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include "action_layer.h"
+#include "bitwise.h"
 #include "keycodes.h"
+#include "process_combo.h"
 #include "raw_hid.h"
 #include QMK_KEYBOARD_H
 #include "version.h"
@@ -14,6 +16,7 @@
 #define TAB MT(MOD_LCTL, KC_TAB)
 #define BSPC MT(MOD_LALT, KC_BSPC)
 
+enum custom_keycodes { CKC_J = SAFE_RANGE, CKC_K, CKC_L, CKC_Q };
 // clang-format off
 // num home row layer - z = \, i = ', o = [, p = ], . = -, / = =, q = `,
 // symbol home row layer - shift + num, z = |, i = ", o = {, p = }, . = _, , = +, q = ~ = maybe not necessary as it is just shifted, probably better to create a specific german layer?
@@ -65,6 +68,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //   KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS
   // ),
   [5] = LAYOUT_voyager(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, CKC_Q, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, CKC_J, CKC_K, CKC_L, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+  ),
+  [6] = LAYOUT_voyager(
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
@@ -75,10 +85,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 }; // clang-format on
 // #$%^&
 
-const uint16_t PROGMEM combo_l_fun[] = {TAB, ENTER, COMBO_END};
-const uint16_t PROGMEM combo_l_mse[] = {TAB, BSPC, COMBO_END};
-const uint16_t PROGMEM combo_l_num[] = {SPACE, ENTER, COMBO_END};
-const uint16_t PROGMEM combo_l_sym[] = {SPACE, BSPC, COMBO_END};
+const uint16_t PROGMEM combo_l_fun[]   = {TAB, ENTER, COMBO_END};
+const uint16_t PROGMEM combo_l_mse[]   = {TAB, BSPC, COMBO_END};
+const uint16_t PROGMEM combo_l_num[]   = {SPACE, ENTER, COMBO_END};
+const uint16_t PROGMEM combo_l_sym[]   = {SPACE, BSPC, COMBO_END};
+const uint16_t PROGMEM combo_l_brcks[] = {KC_D, KC_S, COMBO_END};
 
 const uint16_t PROGMEM combo_a_z[]            = {KC_A, KC_Z, COMBO_END};
 const uint16_t PROGMEM combo_s_x[]            = {KC_S, KC_X, COMBO_END};
@@ -109,6 +120,7 @@ combo_t key_combos[] = {
     COMBO(combo_l_sym, KC_NO),
     COMBO(combo_l_fun, KC_NO),
     COMBO(combo_l_mse, KC_NO), // 3
+    COMBO(combo_l_brcks, MO(5)),
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_a_scolon, KC_ENTER),
     COMBO(combo_d_h, KC_BSPC),
@@ -146,7 +158,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
             layer_clear();
             layer_on(combo_index + 1);
         }
-        
     }
 }
 
@@ -240,6 +251,21 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [5] = {
       // left side
       OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, MOD, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT,
+      // OUT OUT
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, MOD, MOD, MOD, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT
+    },
+
+    [6] = {
+      // left side
+      OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT, OUT, OUT, OUT, OUT,
@@ -251,7 +277,6 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
       OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT
     },
-
 };
 
 // clang-format on
@@ -276,38 +301,41 @@ bool rgb_matrix_indicators_user(void) {
     if (keyboard_config.disable_layer_led) {
         return false;
     }
-    switch (biton32(layer_state)) {
-        case 0:
-            set_layer_color(0);
-            break;
-        case 1:
-            set_layer_color(1);
-            break;
-        case 2:
-            set_layer_color(2);
-            break;
-        case 3:
-            set_layer_color(3);
-            break;
-        case 4:
-            set_layer_color(4);
-            break;
-        default:
-            if (rgb_matrix_get_flags() == LED_FLAG_NONE) rgb_matrix_set_color_all(0, 0, 0);
-            break;
-    }
+    set_layer_color(biton32(layer_state));
     return false;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case CKC_J:
+            if (record->event.pressed) {
+                SEND_STRING("()" SS_TAP(X_LEFT));
+                break;
+            }
+        case CKC_K:
+            if (record->event.pressed) {
+                SEND_STRING("[]" SS_TAP(X_LEFT));
+                break;
+            }
+        case CKC_L:
+            if (record->event.pressed) {
+                SEND_STRING("{}" SS_TAP(X_LEFT));
+                break;
+            }
+        case CKC_Q:
+            if (record->event.pressed) {
+                SEND_STRING("``" SS_TAP(X_LEFT));
+                break;
+            }
+    }
     return true;
 }
 
 static layer_state_t send_state(layer_state_t state) {
     uint8_t data[32] = {0};
-    data[0] = 'L';
-    data[1] = 1;
-    data[31] = get_highest_layer(state);
+    data[0]          = 'L';
+    data[1]          = 1;
+    data[31]         = get_highest_layer(state);
     raw_hid_send(data, 32);
     return state;
 }
@@ -320,7 +348,7 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
 }
 
 void raw_hid_receive(uint8_t *data, uint8_t length) {
-    if(data[0] == 'L') {
+    if (data[0] == 'L') {
         send_state(layer_state);
     }
 }
