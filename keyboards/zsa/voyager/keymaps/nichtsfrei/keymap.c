@@ -7,28 +7,40 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
 
-// enum custom_keycodes {
-//     ST_MACRO_0 = SAFE_RANGE,
-// };
+// TODO delete
+#define ENTER LT(2, KC_ENTER)
+#define SPACE LT(1, KC_SPACE)
+#define TAB LT(3, KC_TAB)
+#define BSPC LT(4, KC_BSPC)
 
-#define ENTER MT(MOD_LGUI, KC_ENTER)
-#define SPACE MT(MOD_LSFT, KC_SPACE)
-#define TAB MT(MOD_LCTL, KC_TAB)
-#define BSPC MT(MOD_LALT, KC_BSPC)
+// Left-hand home row mods
+#define HOME_A LGUI_T(KC_A)
+#define HOME_S LALT_T(KC_S)
+#define HOME_D LSFT_T(KC_D)
+#define HOME_F LCTL_T(KC_F)
+#define HOME_F1 LGUI_T(KC_F1)
+#define HOME_F2 LALT_T(KC_F2)
+#define HOME_F3 LSFT_T(KC_F3)
+#define HOME_F4 LCTL_T(KC_F4)
+
+// Right-hand home row mods
+#define HOME_J RCTL_T(KC_J)
+#define HOME_K RSFT_T(KC_K)
+#define HOME_L LALT_T(KC_L)
+#define HOME_SCLN RGUI_T(KC_SCLN)
+#define HOME_F7 RCTL_T(KC_F7)
+#define HOME_F8 RSFT_T(KC_F8)
+#define HOME_F9 LALT_T(KC_F9)
+#define HOME_F10 RGUI_T(KC_F10)
 
 enum custom_keycodes { CKC_J = SAFE_RANGE, CKC_K, CKC_L, CKC_Q };
 // clang-format off
-// num home row layer - z = \, i = ', o = [, p = ], . = -, / = =, q = `,
-// symbol home row layer - shift + num, z = |, i = ", o = {, p = }, . = _, , = +, q = ~ = maybe not necessary as it is just shifted, probably better to create a specific german layer?
-// F.. homw row layer with multimedia? - o = F11, p = F12, n = NXT_T, u = V_UP, i = V_DOWN, m = PRV_T, y = PAUSE,
-// navigation home row layer, a = KC_END, s = PG_UP, d = PD_DWN, f = PG_HOME, h = KC_LEFT, j = KC_DOWN, k = KC_UP, l = KC_RIGHT
-// mouse home row layer = a = left click, s = right click, d = middle click, y = scroll left, u = scroll down, k = scroll up, l = scroll right
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // TODO: when familiar disable additional keys
   [0] = LAYOUT_voyager(
     KC_EQUAL,  KC_1, KC_2, KC_3, KC_4, KC_5 ,   KC_6, KC_7, KC_8, KC_9, KC_0,KC_MINUS,
     KC_RBRC,KC_Q, KC_W, KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC,
-    KC_ESCAPE, KC_A, KC_S, KC_D, KC_F, KC_G ,   KC_H, KC_J, KC_K, KC_L, KC_SEMICOLON, KC_QUOTE,
+    KC_ESCAPE, HOME_A, HOME_S, HOME_D, HOME_F, KC_G ,   KC_H, HOME_J, HOME_K, HOME_L, HOME_SCLN, KC_QUOTE,
     KC_GRAVE,KC_Z, KC_X, KC_C, KC_V, KC_B,   KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH, KC_BSLS,
     SPACE, TAB                        ,   BSPC,ENTER
   ),
@@ -40,16 +52,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
   [2] = LAYOUT_voyager(
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_END, KC_PGUP, KC_PGDN, KC_HOME, KC_NO,          KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, LSFT(KC_GRAVE), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, LSFT(KC_QUOTE), LSFT(KC_LBRC), LSFT(KC_RBRC), KC_TRNS,
+    KC_TRNS, LSFT(KC_1) , LSFT(KC_2) , LSFT(KC_3) , LSFT(KC_4) , LSFT(KC_5)  ,    LSFT(KC_6) , LSFT(KC_7) , LSFT(KC_8) , LSFT(KC_9) , LSFT(KC_0) , KC_TRNS,
+    KC_TRNS, LSFT(KC_BSLS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, LSFT(KC_EQUAL), LSFT(KC_MINUS), KC_TRNS,
+    KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
+
   [3] = LAYOUT_voyager(
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN, KC_F11, KC_F12, KC_NO,
-    KC_NO, KC_F1 , KC_F2 , KC_F3 , KC_F4 , KC_F5  ,    KC_F6 , KC_F7 , KC_F8 , KC_F9 , KC_F10 , KC_NO,
+    KC_NO, HOME_F1 , HOME_F2 , HOME_F3 , HOME_F4 , KC_F5  ,    KC_F6 , HOME_F7 , HOME_F8 , HOME_F9 , HOME_F10 , KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
@@ -75,6 +88,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
   [6] = LAYOUT_voyager(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_MEDIA_PLAY_PAUSE, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_MEDIA_PREV_TRACK, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, KC_MEDIA_NEXT_TRACK, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS,                                              KC_AUDIO_MUTE, KC_TRNS
+  ),
+  [7] = LAYOUT_voyager(
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
@@ -85,42 +105,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 }; // clang-format on
 // #$%^&
 
-const uint16_t PROGMEM combo_l_fun[]   = {TAB, ENTER, COMBO_END};
-const uint16_t PROGMEM combo_l_mse[]   = {TAB, BSPC, COMBO_END};
-const uint16_t PROGMEM combo_l_num[]   = {SPACE, ENTER, COMBO_END};
-const uint16_t PROGMEM combo_l_sym[]   = {SPACE, BSPC, COMBO_END};
-const uint16_t PROGMEM combo_l_brcks[] = {KC_D, KC_S, COMBO_END};
+const uint16_t PROGMEM combo_l_brcks[] = {HOME_D, HOME_S, COMBO_END};
+const uint16_t PROGMEM combo_l_arrow[] = {HOME_D, HOME_F, COMBO_END};
 
-const uint16_t PROGMEM combo_a_z[]            = {KC_A, KC_Z, COMBO_END};
-const uint16_t PROGMEM combo_s_x[]            = {KC_S, KC_X, COMBO_END};
-const uint16_t PROGMEM combo_d_c[]            = {KC_D, KC_C, COMBO_END};
-const uint16_t PROGMEM combo_f_v[]            = {KC_F, KC_V, COMBO_END};
+const uint16_t PROGMEM combo_a_z[]            = {HOME_A, KC_Z, COMBO_END};
+const uint16_t PROGMEM combo_s_x[]            = {HOME_S, KC_X, COMBO_END};
+const uint16_t PROGMEM combo_d_c[]            = {HOME_D, KC_C, COMBO_END};
+const uint16_t PROGMEM combo_f_v[]            = {HOME_F, KC_V, COMBO_END};
 const uint16_t PROGMEM combo_g_b[]            = {KC_G, KC_B, COMBO_END};
 const uint16_t PROGMEM combo_h_n[]            = {KC_H, KC_N, COMBO_END};
-const uint16_t PROGMEM combo_j_m[]            = {KC_J, KC_M, COMBO_END};
-const uint16_t PROGMEM combo_k_comma[]        = {KC_K, KC_COMMA, COMBO_END};
-const uint16_t PROGMEM combo_l_period[]       = {KC_L, KC_DOT, COMBO_END};
-const uint16_t PROGMEM combo_semicolon_slah[] = {KC_SEMICOLON, KC_SLASH, COMBO_END};
+const uint16_t PROGMEM combo_j_m[]            = {HOME_J, KC_M, COMBO_END};
+const uint16_t PROGMEM combo_k_comma[]        = {HOME_K, KC_COMMA, COMBO_END};
+const uint16_t PROGMEM combo_l_period[]       = {HOME_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_semicolon_slah[] = {HOME_SCLN, KC_SLASH, COMBO_END};
 
-const uint16_t PROGMEM combo_semicolon_p[] = {KC_SEMICOLON, KC_P, COMBO_END};
-const uint16_t PROGMEM combo_l_o[]         = {KC_L, KC_O, COMBO_END};
-const uint16_t PROGMEM combo_k_i[]         = {KC_K, KC_I, COMBO_END};
+const uint16_t PROGMEM combo_semicolon_p[] = {HOME_SCLN, KC_P, COMBO_END};
+const uint16_t PROGMEM combo_l_o[]         = {HOME_L, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_k_i[]         = {HOME_K, KC_I, COMBO_END};
 const uint16_t PROGMEM combo_y_u[]         = {KC_Y, KC_U, COMBO_END};
-const uint16_t PROGMEM combo_j_u[]         = {KC_J, KC_U, COMBO_END};
+const uint16_t PROGMEM combo_j_u[]         = {HOME_J, KC_U, COMBO_END};
 const uint16_t PROGMEM combo_h_y[]         = {KC_H, KC_Y, COMBO_END};
-const uint16_t PROGMEM combo_a_q[]         = {KC_A, KC_Q, COMBO_END};
+const uint16_t PROGMEM combo_a_q[]         = {HOME_A, KC_Q, COMBO_END};
 
-const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, KC_SEMICOLON, COMBO_END};
-const uint16_t PROGMEM combo_a_scolon[] = {KC_A, KC_SEMICOLON, COMBO_END};
-const uint16_t PROGMEM combo_d_h[]      = {KC_D, KC_H, COMBO_END};
-const uint16_t PROGMEM combo_d_l[]      = {KC_D, KC_L, COMBO_END};
+const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, HOME_SCLN, COMBO_END};
+const uint16_t PROGMEM combo_a_scolon[] = {HOME_A, HOME_SCLN, COMBO_END};
+const uint16_t PROGMEM combo_d_h[]      = {HOME_D, KC_H, COMBO_END};
+const uint16_t PROGMEM combo_d_l[]      = {HOME_D, HOME_L, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(combo_l_num, KC_NO), // 0
-    COMBO(combo_l_sym, KC_NO),
-    COMBO(combo_l_fun, KC_NO),
-    COMBO(combo_l_mse, KC_NO), // 3
     COMBO(combo_l_brcks, MO(5)),
+    COMBO(combo_l_arrow, MO(6)),
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_a_scolon, KC_ENTER),
     COMBO(combo_d_h, KC_BSPC),
@@ -147,18 +161,18 @@ combo_t key_combos[] = {
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
-    if (combo_index >= 0 && combo_index <= 3 && pressed) {
-        if (IS_LAYER_ON(combo_index + 1)) {
-            layer_clear();
-        } else {
-            // when triggering to
-            // with layer_move(2)
-            // it got confused and sent KC_NO.
-            // Therefore we clear and enable the specific layer.
-            layer_clear();
-            layer_on(combo_index + 1);
-        }
-    }
+    /*if (combo_index >= 0 && combo_index <= 3 && pressed) {*/
+    /*    if (IS_LAYER_ON(combo_index + 1)) {*/
+    /*        layer_clear();*/
+    /*    } else {*/
+    /*        // when triggering to*/
+    /*        // with layer_move(2)*/
+    /*        // it got confused and sent KC_NO.*/
+    /*        // Therefore we clear and enable the specific layer.*/
+    /*        layer_clear();*/
+    /*        layer_on(combo_index + 1);*/
+    /*    }*/
+    /*}*/
 }
 
 extern rgb_config_t rgb_matrix_config;
@@ -207,15 +221,15 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [2] = {
       // left side
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, SYM, OUT, OUT, OUT, OUT,
       OUT, SYM, SYM, SYM, SYM, SYM,
-      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, SYM, OUT, OUT, OUT, OUT,
       OUT, OUT,
       // right side
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
-      SYM, SYM, SYM, SYM, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, SYM, SYM, SYM, OUT,
+      SYM, SYM, SYM, SYM, SYM, OUT,
+      OUT, OUT, OUT, SYM, SYM, OUT,
       OUT, OUT
     },
 
@@ -264,6 +278,21 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     },
 
     [6] = {
+      // left side
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT,
+      // OUT OUT
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      MOD, MOD, MOD, MOD, MOD, OUT,
+      MOD, MOD, MOD, MOD, OUT, OUT,
+      MOD, MOD, MOD, MOD, MOD, OUT,
+      MOD, OUT
+    },
+
+    [7] = {
       // left side
       OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT, OUT, OUT, OUT, OUT,
