@@ -3,35 +3,35 @@
 #include "bitwise.h"
 #include "keycodes.h"
 #include "process_combo.h"
+#include "quantum_keycodes.h"
 #include "raw_hid.h"
 #include QMK_KEYBOARD_H
 #include "version.h"
 
-// TODO delete
-#define ENTER LT(2, KC_ENTER)
-#define SPACE LT(1, KC_SPACE)
-#define TAB LT(3, KC_TAB)
-#define BSPC LT(4, KC_BSPC)
+#define ENTER LCTL_T(KC_ENTER)
+#define SPACE LSFT_T(KC_SPACE)
+#define TAB LALT_T(KC_TAB)
+#define BSPC LGUI_T(KC_BSPC)
 
-// Left-hand home row mods
-#define HOME_A LGUI_T(KC_A)
-#define HOME_S LALT_T(KC_S)
-#define HOME_D LSFT_T(KC_D)
-#define HOME_F LCTL_T(KC_F)
-#define HOME_F1 LGUI_T(KC_F1)
-#define HOME_F2 LALT_T(KC_F2)
-#define HOME_F3 LSFT_T(KC_F3)
-#define HOME_F4 LCTL_T(KC_F4)
+// Left-hand home row
+#define HOME_A KC_A
+#define HOME_S KC_S
+#define HOME_D KC_D
+#define HOME_F KC_F
+#define HOME_F1 KC_F1
+#define HOME_F2 KC_F2
+#define HOME_F3 KC_F3
+#define HOME_F4 KC_F4
 
-// Right-hand home row mods
-#define HOME_J RCTL_T(KC_J)
-#define HOME_K RSFT_T(KC_K)
-#define HOME_L LALT_T(KC_L)
-#define HOME_SCLN RGUI_T(KC_SCLN)
-#define HOME_F7 RCTL_T(KC_F7)
-#define HOME_F8 RSFT_T(KC_F8)
-#define HOME_F9 LALT_T(KC_F9)
-#define HOME_F10 RGUI_T(KC_F10)
+// Right-hand home row
+#define HOME_J KC_J
+#define HOME_K KC_K
+#define HOME_L KC_L
+#define HOME_SCLN KC_SCLN
+#define HOME_F7 KC_F7
+#define HOME_F8 KC_F8
+#define HOME_F9 KC_F9
+#define HOME_F10 KC_F10
 
 enum custom_keycodes { CKC_J = SAFE_RANGE, CKC_K, CKC_L, CKC_Q };
 // clang-format off
@@ -45,17 +45,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     SPACE, TAB                        ,   BSPC,ENTER
   ),
   [1] = LAYOUT_voyager(
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_GRAVE, KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO, KC_QUOTE, KC_LBRC, KC_RBRC, KC_NO,
-    KC_NO, KC_1 , KC_2 , KC_3 , KC_4 , KC_5  ,    KC_6 , KC_7 , KC_8 , KC_9 , KC_0 , KC_NO,
-    KC_NO, KC_BSLS, KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO, KC_NO, KC_EQUAL, KC_MINUS, KC_NO,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_QUOTE, KC_LBRC, KC_RBRC, KC_TRNS,
+    KC_TRNS, KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS  ,    KC_6 , KC_7 , KC_8 , KC_9 , KC_0 , KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_EQUAL, KC_MINUS, KC_TRNS,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
   [2] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, LSFT(KC_GRAVE), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, LSFT(KC_QUOTE), LSFT(KC_LBRC), LSFT(KC_RBRC), KC_TRNS,
-    KC_TRNS, LSFT(KC_1) , LSFT(KC_2) , LSFT(KC_3) , LSFT(KC_4) , LSFT(KC_5)  ,    LSFT(KC_6) , LSFT(KC_7) , LSFT(KC_8) , LSFT(KC_9) , LSFT(KC_0) , KC_TRNS,
-    KC_TRNS, LSFT(KC_BSLS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, LSFT(KC_EQUAL), LSFT(KC_MINUS), KC_TRNS,
+    KC_TRNS, KC_GRAVE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_1 , KC_2 , KC_3 , KC_4 , KC_5  ,    KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS,
+    KC_TRNS, KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
 
@@ -102,22 +102,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
 
-}; // clang-format on
+};
+
+// clang-format off
 // #$%^&
 
-const uint16_t PROGMEM combo_l_brcks[] = {HOME_D, HOME_S, COMBO_END};
-const uint16_t PROGMEM combo_l_arrow[] = {HOME_D, HOME_F, COMBO_END};
-
-const uint16_t PROGMEM combo_a_z[]            = {HOME_A, KC_Z, COMBO_END};
-const uint16_t PROGMEM combo_s_x[]            = {HOME_S, KC_X, COMBO_END};
-const uint16_t PROGMEM combo_d_c[]            = {HOME_D, KC_C, COMBO_END};
-const uint16_t PROGMEM combo_f_v[]            = {HOME_F, KC_V, COMBO_END};
-const uint16_t PROGMEM combo_g_b[]            = {KC_G, KC_B, COMBO_END};
-const uint16_t PROGMEM combo_h_n[]            = {KC_H, KC_N, COMBO_END};
-const uint16_t PROGMEM combo_j_m[]            = {HOME_J, KC_M, COMBO_END};
-const uint16_t PROGMEM combo_k_comma[]        = {HOME_K, KC_COMMA, COMBO_END};
-const uint16_t PROGMEM combo_l_period[]       = {HOME_L, KC_DOT, COMBO_END};
-const uint16_t PROGMEM combo_semicolon_slah[] = {HOME_SCLN, KC_SLASH, COMBO_END};
+const uint16_t PROGMEM combo_l_brcks[]  = {HOME_A, HOME_S, COMBO_END};
+const uint16_t PROGMEM combo_l_arrow[]  = {HOME_S, HOME_D, COMBO_END};
+const uint16_t PROGMEM combo_l_num[]    = {HOME_D, HOME_F, COMBO_END};
+const uint16_t PROGMEM combo_r_num[]    = {HOME_J, HOME_K, COMBO_END};
+const uint16_t PROGMEM combo_lr_fun[]   = {SPACE, ENTER, COMBO_END};
+const uint16_t PROGMEM combo_lr_mouse[] = {TAB, BSPC, COMBO_END};
 
 const uint16_t PROGMEM combo_semicolon_p[] = {HOME_SCLN, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_l_o[]         = {HOME_L, KC_O, COMBO_END};
@@ -133,6 +128,10 @@ const uint16_t PROGMEM combo_d_h[]      = {HOME_D, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_d_l[]      = {HOME_D, HOME_L, COMBO_END};
 
 combo_t key_combos[] = {
+    COMBO(combo_l_num, MO(1)),
+    COMBO(combo_r_num, MO(2)),
+    COMBO(combo_lr_fun, MO(3)),
+    COMBO(combo_lr_mouse, MO(4)),
     COMBO(combo_l_brcks, MO(5)),
     COMBO(combo_l_arrow, MO(6)),
     COMBO(combo_z_scolon, KC_ESCAPE),
@@ -148,16 +147,6 @@ combo_t key_combos[] = {
     COMBO(combo_h_y, KC_RIGHT_BRACKET),
     COMBO(combo_a_q, KC_GRAVE),
 
-    COMBO(combo_a_z, KC_1),
-    COMBO(combo_s_x, KC_2),
-    COMBO(combo_d_c, KC_3),
-    COMBO(combo_f_v, KC_4),
-    COMBO(combo_g_b, KC_5),
-    COMBO(combo_h_n, KC_6),
-    COMBO(combo_j_m, KC_7),
-    COMBO(combo_k_comma, KC_8),
-    COMBO(combo_l_period, KC_9),
-    COMBO(combo_semicolon_slah, KC_0),
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
@@ -206,9 +195,9 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [1] = {
       // left side
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, NUM, OUT, OUT, OUT, OUT,
-      OUT, NUM, NUM, NUM, NUM, NUM,
-      OUT, NUM, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT,
       // right side
       OUT, OUT, OUT, OUT, OUT, OUT,
@@ -221,15 +210,15 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [2] = {
       // left side
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, SYM, OUT, OUT, OUT, OUT,
-      OUT, SYM, SYM, SYM, SYM, SYM,
-      OUT, SYM, OUT, OUT, OUT, OUT,
+      OUT, NUM, OUT, OUT, OUT, OUT,
+      OUT, NUM, NUM, NUM, NUM, NUM,
+      OUT, NUM, OUT, OUT, OUT, OUT,
       OUT, OUT,
       // right side
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, SYM, SYM, SYM, OUT,
-      SYM, SYM, SYM, SYM, SYM, OUT,
-      OUT, OUT, OUT, SYM, SYM, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT
     },
 
@@ -251,13 +240,13 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
       // left side
       OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, MOD, MOD, MOD, MOD, MOD,
-      OUT, MOD, MOD, MOD, OUT, OUT,
+      OUT, SYM, SYM, SYM, SYM, SYM,
+      OUT, SYM, SYM, SYM, OUT, OUT,
       OUT, OUT,
       // right side
       OUT, OUT, OUT, OUT, OUT, OUT,
-      MOD, MOD, MOD, MOD, OUT, OUT,
-      MOD, MOD, MOD, MOD, OUT, OUT,
+      SYM, SYM, SYM, SYM, OUT, OUT,
+      SYM, SYM, SYM, SYM, OUT, OUT,
       OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT
     },
