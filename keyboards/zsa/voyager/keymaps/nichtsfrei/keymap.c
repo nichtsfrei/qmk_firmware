@@ -41,27 +41,29 @@ enum custom_keycodes { CKC_H = SAFE_RANGE, CKC_J, CKC_K, CKC_L, CKC_SEMICOLON, C
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // TODO: when familiar disable additional keys
   [0] = LAYOUT_voyager(
-    KC_EQUAL,  KC_1, KC_2, KC_3, KC_4, KC_5 ,   KC_6, KC_7, KC_8, KC_9, KC_0,KC_MINUS,
+    KC_F11,  KC_F1, KC_F2, KC_F3, KC_F4, KC_F5 ,   KC_F6, KC_F7, KC_F8, KC_F9, KC_F10,KC_F12,
     KC_RBRC,KC_Q, KC_W, KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC,
     KC_ESCAPE, HOME_A, HOME_S, HOME_D, HOME_F, KC_G ,   KC_H, HOME_J, HOME_K, HOME_L, HOME_SCLN, KC_QUOTE,
     KC_GRAVE,KC_Z, KC_X, KC_C, KC_V, KC_B,   KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH, KC_BSLS,
     SPACE, TAB                        ,   BSPC,ENTER
   ),
+
   [1] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_QUOTE, KC_LBRC, KC_RBRC, KC_TRNS,
-    KC_TRNS, KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS  ,    KC_6 , KC_7 , KC_8 , KC_9 , KC_0 , KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_EQUAL, KC_MINUS, KC_TRNS,
+    KC_TRNS, KC_GRAVE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_QUOTE, KC_LBRC, KC_RBRC, KC_TRNS,
+    KC_TRNS, KC_1 , KC_2 , KC_3 , KC_4 , KC_5   ,    KC_6 , KC_7 , KC_8 , KC_9 , KC_0 , KC_TRNS,
+    KC_TRNS, KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_EQUAL, KC_MINUS, KC_TRNS,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
   [2] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_GRAVE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_1 , KC_2 , KC_3 , KC_4 , KC_5  ,    KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS , KC_TRNS,
-    KC_TRNS, KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, LSFT(KC_GRAVE), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, LSFT(KC_QUOTE), LSFT(KC_LBRC), LSFT(KC_RBRC), KC_TRNS,
+    KC_TRNS, LSFT(KC_1) , LSFT(KC_2) , LSFT(KC_3) , LSFT(KC_4) , LSFT(KC_5)   ,    LSFT(KC_6) , LSFT(KC_7) , LSFT(KC_8) , LSFT(KC_9) , LSFT(KC_0) , KC_TRNS,
+    KC_TRNS, LSFT(KC_BSLS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, LSFT(KC_EQUAL), LSFT(KC_MINUS), KC_TRNS,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
 
+  // TODO: media control? vim? tmux?
   [3] = LAYOUT_voyager(
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN, KC_F11, KC_F12, KC_NO,
@@ -110,10 +112,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format off
 // #$%^&
 
-const uint16_t PROGMEM combo_l_brcks[]  = {HOME_A, HOME_S, COMBO_END};
+const uint16_t PROGMEM combo_l_num[]  = {SPACE, TAB, COMBO_END};
 const uint16_t PROGMEM combo_l_arrow[]  = {HOME_S, HOME_D, COMBO_END};
-const uint16_t PROGMEM combo_l_num[]    = {HOME_D, HOME_F, COMBO_END};
-const uint16_t PROGMEM combo_r_num[]    = {HOME_J, HOME_K, COMBO_END};
+const uint16_t PROGMEM combo_l_brcks[]    = {HOME_D, HOME_F, COMBO_END};
+const uint16_t PROGMEM combo_r_sym[]    = {ENTER, BSPC, COMBO_END};
 const uint16_t PROGMEM combo_lr_fun[]   = {SPACE, ENTER, COMBO_END};
 const uint16_t PROGMEM combo_lr_mouse[] = {TAB, BSPC, COMBO_END};
 
@@ -142,11 +144,11 @@ const uint16_t PROGMEM combo_d_h[]      = {HOME_D, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_d_l[]      = {HOME_D, HOME_L, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(combo_l_num, MO(1)),
-    COMBO(combo_r_num, MO(2)),
+    COMBO(combo_l_brcks, MO(5)),
+    COMBO(combo_r_sym, MO(2)),
     COMBO(combo_lr_fun, MO(3)),
     COMBO(combo_lr_mouse, MO(4)),
-    COMBO(combo_l_brcks, MO(5)),
+    COMBO(combo_l_num, MO(1)),
     COMBO(combo_l_arrow, MO(6)),
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_a_scolon, KC_ENTER),
@@ -220,9 +222,9 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [1] = {
       // left side
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, NUM, OUT, OUT, OUT, OUT,
+      OUT, NUM, NUM, NUM, NUM, NUM,
+      OUT, NUM, OUT, OUT, OUT, OUT,
       OUT, OUT,
       // right side
       OUT, OUT, OUT, OUT, OUT, OUT,
@@ -241,9 +243,9 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
       OUT, OUT,
       // right side
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, OUT, OUT, OUT, OUT, OUT,
+      OUT, OUT, NUM, NUM, NUM, OUT,
+      NUM, NUM, NUM, NUM, NUM, OUT,
+      OUT, OUT, OUT, NUM, NUM, OUT,
       OUT, OUT
     },
 
@@ -286,7 +288,7 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
       // OUT OUT
       OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT, OUT, OUT, OUT, OUT,
-      OUT, MOD, MOD, MOD, OUT, OUT,
+      MOD, MOD, MOD, MOD, MOD, OUT,
       OUT, OUT, OUT, OUT, OUT, OUT,
       OUT, OUT
     },
@@ -390,26 +392,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
     }
     return true;
-}
-
-static layer_state_t send_state(layer_state_t state) {
-    uint8_t data[32] = {0};
-    data[0]          = 'L';
-    data[1]          = 1;
-    data[31]         = get_highest_layer(state);
-    raw_hid_send(data, 32);
-    return state;
-}
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-    return send_state(state);
-}
-layer_state_t default_layer_state_set_user(layer_state_t state) {
-    return send_state(state);
-}
-
-void raw_hid_receive(uint8_t *data, uint8_t length) {
-    if (data[0] == 'L') {
-        send_state(layer_state);
-    }
 }
