@@ -1,7 +1,10 @@
 #include <stdint.h>
+#include "action.h"
 #include "action_layer.h"
+#include "action_util.h"
 #include "bitwise.h"
 #include "keycodes.h"
+#include "modifiers.h"
 #include "process_combo.h"
 #include "quantum_keycodes.h"
 #include "raw_hid.h"
@@ -33,7 +36,7 @@
 #define HOME_F9 KC_F9
 #define HOME_F10 KC_F10
 
-enum custom_keycodes { CKC_J = SAFE_RANGE, CKC_K, CKC_L, CKC_Q };
+enum custom_keycodes { CKC_H = SAFE_RANGE, CKC_J, CKC_K, CKC_L, CKC_SEMICOLON, CKC_Q };
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // TODO: when familiar disable additional keys
@@ -83,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [5] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, CKC_Q, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, CKC_J, CKC_K, CKC_L, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          CKC_H, CKC_J, CKC_K, CKC_L, CKC_SEMICOLON, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
@@ -113,6 +116,17 @@ const uint16_t PROGMEM combo_l_num[]    = {HOME_D, HOME_F, COMBO_END};
 const uint16_t PROGMEM combo_r_num[]    = {HOME_J, HOME_K, COMBO_END};
 const uint16_t PROGMEM combo_lr_fun[]   = {SPACE, ENTER, COMBO_END};
 const uint16_t PROGMEM combo_lr_mouse[] = {TAB, BSPC, COMBO_END};
+
+const uint16_t PROGMEM combo_a_z[]            = {KC_A, KC_Z, COMBO_END};
+const uint16_t PROGMEM combo_s_x[]            = {KC_S, KC_X, COMBO_END};
+const uint16_t PROGMEM combo_d_c[]            = {KC_D, KC_C, COMBO_END};
+const uint16_t PROGMEM combo_f_v[]            = {KC_F, KC_V, COMBO_END};
+const uint16_t PROGMEM combo_g_b[]            = {KC_G, KC_B, COMBO_END};
+const uint16_t PROGMEM combo_h_n[]            = {KC_H, KC_N, COMBO_END};
+const uint16_t PROGMEM combo_j_m[]            = {KC_J, KC_M, COMBO_END};
+const uint16_t PROGMEM combo_k_comma[]        = {KC_K, KC_COMMA, COMBO_END};
+const uint16_t PROGMEM combo_l_period[]       = {KC_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_semicolon_slah[] = {KC_SEMICOLON, KC_SLASH, COMBO_END};
 
 const uint16_t PROGMEM combo_semicolon_p[] = {HOME_SCLN, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_l_o[]         = {HOME_L, KC_O, COMBO_END};
@@ -146,6 +160,17 @@ combo_t key_combos[] = {
     COMBO(combo_y_u, KC_LEFT_BRACKET),
     COMBO(combo_h_y, KC_RIGHT_BRACKET),
     COMBO(combo_a_q, KC_GRAVE),
+
+    COMBO(combo_a_z, KC_1),
+    COMBO(combo_s_x, KC_2),
+    COMBO(combo_d_c, KC_3),
+    COMBO(combo_f_v, KC_4),
+    COMBO(combo_g_b, KC_5),
+    COMBO(combo_h_n, KC_6),
+    COMBO(combo_j_m, KC_7),
+    COMBO(combo_k_comma, KC_8),
+    COMBO(combo_l_period, KC_9),
+    COMBO(combo_semicolon_slah, KC_0),
 
 };
 
@@ -323,28 +348,46 @@ bool rgb_matrix_indicators_user(void) {
     return false;
 }
 
+uint8_t mod_state;
+
+#define _SPECIAL_HANDLING(a, b, c)                   \
+    do {                                             \
+        if (record->event.pressed) {                 \
+            if (mod_state & MOD_MASK_CTRL) {         \
+                del_mods(MOD_MASK_CTRL);             \
+                SEND_STRING(a SS_TAP(X_LEFT));       \
+                set_mods(mod_state);                 \
+            } else if (mod_state & MOD_MASK_SHIFT) { \
+                del_mods(MOD_MASK_SHIFT);            \
+                SEND_STRING(b);                      \
+                set_mods(mod_state);                 \
+            } else {                                 \
+                SEND_STRING(c);                      \
+            }                                        \
+        }                                            \
+    } while (0)
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    mod_state = get_mods();
     switch (keycode) {
+        case CKC_H:
+            _SPECIAL_HANDLING("\"\"", "=>", "->");
+            break;
+        case CKC_SEMICOLON:
+            _SPECIAL_HANDLING("''", "&&", "||");
+            break;
         case CKC_J:
-            if (record->event.pressed) {
-                SEND_STRING("()" SS_TAP(X_LEFT));
-                break;
-            }
+            _SPECIAL_HANDLING("()", ")", "(");
+            break;
         case CKC_K:
-            if (record->event.pressed) {
-                SEND_STRING("[]" SS_TAP(X_LEFT));
-                break;
-            }
+            _SPECIAL_HANDLING("[]", "{", "[");
+            break;
         case CKC_L:
-            if (record->event.pressed) {
-                SEND_STRING("{}" SS_TAP(X_LEFT));
-                break;
-            }
+            _SPECIAL_HANDLING("{}", "}", "]");
+            break;
         case CKC_Q:
-            if (record->event.pressed) {
-                SEND_STRING("``" SS_TAP(X_LEFT));
-                break;
-            }
+            _SPECIAL_HANDLING("``", "~", "`");
+            break;
     }
     return true;
 }
