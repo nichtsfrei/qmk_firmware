@@ -163,16 +163,16 @@ combo_t key_combos[] = {
     COMBO(combo_h_y, KC_RIGHT_BRACKET),
     COMBO(combo_a_q, KC_GRAVE),
 
-    COMBO(combo_a_z, KC_1),
-    COMBO(combo_s_x, KC_2),
-    COMBO(combo_d_c, KC_3),
-    COMBO(combo_f_v, KC_4),
+    COMBO(combo_a_z, LCTL_T(KC_1)),
+    COMBO(combo_s_x, LALT_T(KC_2)),
+    COMBO(combo_d_c, LGUI_T(KC_3)),
+    COMBO(combo_f_v, LSFT_T(KC_4)),
     COMBO(combo_g_b, KC_5),
     COMBO(combo_h_n, KC_6),
-    COMBO(combo_j_m, KC_7),
-    COMBO(combo_k_comma, KC_8),
-    COMBO(combo_l_period, KC_9),
-    COMBO(combo_semicolon_slah, KC_0),
+    COMBO(combo_j_m, RSFT_T(KC_7)),
+    COMBO(combo_k_comma, RGUI_T(KC_8)),
+    COMBO(combo_l_period, RALT_T(KC_9)),
+    COMBO(combo_semicolon_slah, RCTL_T(KC_0)),
 
 };
 
@@ -382,10 +382,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             _SPECIAL_HANDLING("()", ")", "(");
             break;
         case CKC_K:
-            _SPECIAL_HANDLING("[]", "{", "[");
+            _SPECIAL_HANDLING("[]", "]", "[");
             break;
         case CKC_L:
-            _SPECIAL_HANDLING("{}", "}", "]");
+            _SPECIAL_HANDLING("{}", "}", "{");
             break;
         case CKC_Q:
             _SPECIAL_HANDLING("``", "~", "`");
