@@ -17,9 +17,9 @@
 #define BSPC LGUI_T(KC_BSPC)
 
 // Left-hand home row
-#define HOME_A KC_A
-#define HOME_S KC_S
-#define HOME_D KC_D
+#define HOME_A LGUI_T(KC_A)
+#define HOME_S LALT_T(KC_S)
+#define HOME_D LCTL_T(KC_D)
 #define HOME_F KC_F
 #define HOME_F1 KC_F1
 #define HOME_F2 KC_F2
@@ -28,15 +28,23 @@
 
 // Right-hand home row
 #define HOME_J KC_J
-#define HOME_K KC_K
-#define HOME_L KC_L
-#define HOME_SCLN KC_SCLN
+#define HOME_K RCTL_T(KC_K)
+#define HOME_L RALT_T(KC_L)
+#define HOME_SCLN RGUI_T(KC_SCLN)
 #define HOME_F7 KC_F7
 #define HOME_F8 KC_F8
 #define HOME_F9 KC_F9
 #define HOME_F10 KC_F10
 
-enum custom_keycodes { CKC_H = SAFE_RANGE, CKC_J, CKC_K, CKC_L, CKC_SEMICOLON, CKC_Q };
+enum custom_keycodes {
+    CKC_H = SAFE_RANGE,
+    CKC_J,
+    CKC_K,
+    CKC_L,
+    CKC_SEMICOLON,
+    CKC_Q
+    // don't collaps
+};
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // TODO: when familiar disable additional keys
@@ -63,20 +71,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
 
-  // TODO: media control? vim? tmux?
   [3] = LAYOUT_voyager(
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN, KC_F11, KC_F12, KC_NO,
-    KC_NO, HOME_F1 , HOME_F2 , HOME_F3 , HOME_F4 , KC_F5  ,    KC_F6 , HOME_F7 , HOME_F8 , HOME_F9 , HOME_F10 , KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
-  ),
-  [4] = LAYOUT_voyager(
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                                                                      QK_MOUSE_WHEEL_LEFT, QK_MOUSE_WHEEL_DOWN, QK_MOUSE_WHEEL_UP, QK_MOUSE_WHEEL_RIGHT, KC_NO, KC_NO,
     KC_NO, QK_MOUSE_BUTTON_1, QK_MOUSE_BUTTON_2, QK_MOUSE_BUTTON_3, QK_MOUSE_BUTTON_4, QK_MOUSE_BUTTON_5,          QK_MOUSE_CURSOR_LEFT, QK_MOUSE_CURSOR_DOWN, QK_MOUSE_CURSOR_UP, QK_MOUSE_CURSOR_RIGHT, KC_NO, KC_NO,
     KC_NO, QK_MOUSE_ACCELERATION_0, QK_MOUSE_ACCELERATION_1, QK_MOUSE_ACCELERATION_2, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+  ),
+  // TODO: media control? vim? tmux?
+  [4] = LAYOUT_voyager(
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN, KC_F11, KC_F12, KC_NO,
+    KC_NO, HOME_F1 , HOME_F2 , HOME_F3 , HOME_F4 , KC_F5  ,    KC_F6 , HOME_F7 , HOME_F8 , HOME_F9 , HOME_F10 , KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
   // [2] = LAYOUT_voyager(
   //   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -85,6 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_TRNS, KC_TRNS,
   //   KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS
   // ),
+  // vim copy to clipboard = "+ instead of ||
   [5] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, CKC_Q, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -112,12 +121,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format off
 // #$%^&
 
-const uint16_t PROGMEM combo_l_num[]  = {SPACE, TAB, COMBO_END};
+const uint16_t PROGMEM combo_lr_raise_layer[]   = {SPACE, ENTER, COMBO_END};
+const uint16_t PROGMEM combo_lr_lower_layer[] = {TAB, BSPC, COMBO_END};
 const uint16_t PROGMEM combo_l_arrow[]  = {HOME_S, HOME_D, COMBO_END};
 const uint16_t PROGMEM combo_l_brcks[]    = {HOME_D, HOME_F, COMBO_END};
-const uint16_t PROGMEM combo_r_sym[]    = {ENTER, BSPC, COMBO_END};
-const uint16_t PROGMEM combo_lr_fun[]   = {SPACE, ENTER, COMBO_END};
-const uint16_t PROGMEM combo_lr_mouse[] = {TAB, BSPC, COMBO_END};
 
 const uint16_t PROGMEM combo_a_z[]            = {KC_A, KC_Z, COMBO_END};
 const uint16_t PROGMEM combo_s_x[]            = {KC_S, KC_X, COMBO_END};
@@ -139,19 +146,18 @@ const uint16_t PROGMEM combo_h_y[]         = {KC_H, KC_Y, COMBO_END};
 const uint16_t PROGMEM combo_a_q[]         = {HOME_A, KC_Q, COMBO_END};
 
 const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, HOME_SCLN, COMBO_END};
-const uint16_t PROGMEM combo_a_scolon[] = {HOME_A, HOME_SCLN, COMBO_END};
+const uint16_t PROGMEM combo_tab[] = {HOME_F, HOME_J, COMBO_END};
 const uint16_t PROGMEM combo_d_h[]      = {HOME_D, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_d_l[]      = {HOME_D, HOME_L, COMBO_END};
 
 combo_t key_combos[] = {
+    COMBO_ACTION(combo_lr_raise_layer),
+    COMBO_ACTION(combo_lr_lower_layer),
     COMBO(combo_l_brcks, MO(5)),
-    COMBO(combo_r_sym, MO(2)),
-    COMBO(combo_lr_fun, MO(3)),
-    COMBO(combo_lr_mouse, MO(4)),
-    COMBO(combo_l_num, MO(1)),
     COMBO(combo_l_arrow, MO(6)),
+
     COMBO(combo_z_scolon, KC_ESCAPE),
-    COMBO(combo_a_scolon, KC_ENTER),
+    COMBO(combo_tab, KC_TAB),
     COMBO(combo_d_h, KC_BSPC),
     COMBO(combo_d_l, KC_DELETE),
 
@@ -163,32 +169,40 @@ combo_t key_combos[] = {
     COMBO(combo_h_y, KC_RIGHT_BRACKET),
     COMBO(combo_a_q, KC_GRAVE),
 
-    COMBO(combo_a_z, LCTL_T(KC_1)),
-    COMBO(combo_s_x, LALT_T(KC_2)),
-    COMBO(combo_d_c, LGUI_T(KC_3)),
-    COMBO(combo_f_v, LSFT_T(KC_4)),
+    COMBO(combo_a_z, KC_1),
+    COMBO(combo_s_x, KC_2),
+    COMBO(combo_d_c, KC_3),
+    COMBO(combo_f_v, KC_4),
     COMBO(combo_g_b, KC_5),
     COMBO(combo_h_n, KC_6),
-    COMBO(combo_j_m, RSFT_T(KC_7)),
-    COMBO(combo_k_comma, RGUI_T(KC_8)),
-    COMBO(combo_l_period, RALT_T(KC_9)),
-    COMBO(combo_semicolon_slah, RCTL_T(KC_0)),
-
+    COMBO(combo_j_m, KC_7),
+    COMBO(combo_k_comma, KC_8),
+    COMBO(combo_l_period, KC_9),
+    COMBO(combo_semicolon_slah, KC_0),
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
-    /*if (combo_index >= 0 && combo_index <= 3 && pressed) {*/
-    /*    if (IS_LAYER_ON(combo_index + 1)) {*/
-    /*        layer_clear();*/
-    /*    } else {*/
-    /*        // when triggering to*/
-    /*        // with layer_move(2)*/
-    /*        // it got confused and sent KC_NO.*/
-    /*        // Therefore we clear and enable the specific layer.*/
-    /*        layer_clear();*/
-    /*        layer_on(combo_index + 1);*/
-    /*    }*/
-    /*}*/
+    if (combo_index == 0 && pressed) {
+        if (IS_LAYER_ON(1)) {
+            layer_move(2);
+        } else if (IS_LAYER_ON(2)) {
+            layer_move(3);
+        } else if (IS_LAYER_ON(3)) {
+            layer_move(0);
+        } else {
+            layer_move(1);
+        }
+    } else if (combo_index == 1 && pressed)  {
+        if (IS_LAYER_ON(1)) {
+            layer_move(0);
+        } else if (IS_LAYER_ON(2)) {
+            layer_move(1);
+        } else if (IS_LAYER_ON(3)) {
+            layer_move(2);
+        } else {
+            layer_move(3);
+        }
+    }
 }
 
 extern rgb_config_t rgb_matrix_config;
