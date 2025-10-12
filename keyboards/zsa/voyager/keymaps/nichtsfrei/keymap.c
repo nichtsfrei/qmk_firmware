@@ -126,16 +126,16 @@ const uint16_t PROGMEM combo_lr_lower_layer[] = {TAB, BSPC, COMBO_END};
 const uint16_t PROGMEM combo_l_arrow[]  = {HOME_S, HOME_D, COMBO_END};
 const uint16_t PROGMEM combo_l_brcks[]    = {HOME_D, HOME_F, COMBO_END};
 
-const uint16_t PROGMEM combo_a_z[]            = {KC_A, KC_Z, COMBO_END};
-const uint16_t PROGMEM combo_s_x[]            = {KC_S, KC_X, COMBO_END};
-const uint16_t PROGMEM combo_d_c[]            = {KC_D, KC_C, COMBO_END};
-const uint16_t PROGMEM combo_f_v[]            = {KC_F, KC_V, COMBO_END};
+const uint16_t PROGMEM combo_a_z[]            = {HOME_A, KC_Z, COMBO_END};
+const uint16_t PROGMEM combo_s_x[]            = {HOME_S, KC_X, COMBO_END};
+const uint16_t PROGMEM combo_d_c[]            = {HOME_D, KC_C, COMBO_END};
+const uint16_t PROGMEM combo_f_v[]            = {HOME_F, KC_V, COMBO_END};
 const uint16_t PROGMEM combo_g_b[]            = {KC_G, KC_B, COMBO_END};
 const uint16_t PROGMEM combo_h_n[]            = {KC_H, KC_N, COMBO_END};
-const uint16_t PROGMEM combo_j_m[]            = {KC_J, KC_M, COMBO_END};
-const uint16_t PROGMEM combo_k_comma[]        = {KC_K, KC_COMMA, COMBO_END};
-const uint16_t PROGMEM combo_l_period[]       = {KC_L, KC_DOT, COMBO_END};
-const uint16_t PROGMEM combo_semicolon_slah[] = {KC_SEMICOLON, KC_SLASH, COMBO_END};
+const uint16_t PROGMEM combo_j_m[]            = {HOME_J, KC_M, COMBO_END};
+const uint16_t PROGMEM combo_k_comma[]        = {HOME_K, KC_COMMA, COMBO_END};
+const uint16_t PROGMEM combo_l_period[]       = {HOME_L, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combo_semicolon_slah[] = {HOME_SCLN, KC_SLASH, COMBO_END};
 
 const uint16_t PROGMEM combo_semicolon_p[] = {HOME_SCLN, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_l_o[]         = {HOME_L, KC_O, COMBO_END};
