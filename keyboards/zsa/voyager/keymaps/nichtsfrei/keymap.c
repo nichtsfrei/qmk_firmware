@@ -1,15 +1,4 @@
-#include <stdint.h>
-#include "action.h"
-#include "action_layer.h"
-#include "action_util.h"
-#include "bitwise.h"
-#include "keycodes.h"
-#include "modifiers.h"
-#include "process_combo.h"
-#include "quantum_keycodes.h"
-#include "raw_hid.h"
 #include QMK_KEYBOARD_H
-#include "version.h"
 
 #define ENTER LCTL_T(KC_ENTER)
 #define SPACE LSFT_T(KC_SPACE)
@@ -21,20 +10,34 @@
 #define HOME_S LALT_T(KC_S)
 #define HOME_D LCTL_T(KC_D)
 #define HOME_F LSFT_T(KC_F)
-#define HOME_F1 KC_F1
-#define HOME_F2 KC_F2
-#define HOME_F3 KC_F3
-#define HOME_F4 KC_F4
+
+#define HOME_F1 LGUI_T(KC_F1)
+#define HOME_F2 LALT(KC_F2)
+#define HOME_F3 LCTL_T(KC_F3)
+#define HOME_F4 LSFT_T(KC_F4)
+
+
+#define HOME_1 LGUI_T(KC_1)
+#define HOME_2 LALT(KC_2)
+#define HOME_3 LCTL_T(KC_3)
+#define HOME_4 LSFT_T(KC_4)
 
 // Right-hand home row
 #define HOME_J LSFT_T(KC_J)
 #define HOME_K RCTL_T(KC_K)
 #define HOME_L RALT_T(KC_L)
 #define HOME_SCLN RGUI_T(KC_SCLN)
-#define HOME_F7 KC_F7
-#define HOME_F8 KC_F8
-#define HOME_F9 KC_F9
-#define HOME_F10 KC_F10
+
+#define HOME_F7 LSFT_T(KC_F7)
+#define HOME_F8 RCTL_T(KC_F8)
+#define HOME_F9 RALT_T(KC_F9)
+#define HOME_F10 RGUI_T(KC_F10)
+
+
+#define HOME_7 LSFT_T(KC_7)
+#define HOME_8 RCTL_T(KC_8)
+#define HOME_9 RALT_T(KC_9)
+#define HOME_0 RGUI_T(KC_0)
 
 enum custom_keycodes {
     CKC_H = SAFE_RANGE,
@@ -65,21 +68,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,KC_NO, KC_W, KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O, KC_NO, KC_NO,
     KC_NO, KC_Q, HOME_S, HOME_D, HOME_F, KC_G ,   KC_H, HOME_J, HOME_K, HOME_L, KC_P, KC_NO,
     CKC_LUP,HOME_A, KC_X, KC_C, KC_V, KC_B,   KC_N, KC_M, KC_COMMA, KC_DOT, HOME_SCLN,CKC_LDOWN,
-    KC_NO,  KC_Z, KC_NO, KC_NO, TAB, TG(FUNCTION),   TG(NUMBERS), BSPC, KC_NO, KC_NO, KC_SLSH,KC_NO,
+    KC_NO,  KC_Z, KC_NO, KC_NO, TAB, MO(FUNCTION),   MO(NUMBERS), BSPC, KC_NO, KC_NO, KC_SLSH,KC_NO,
     SPACE, KC_NO,   KC_NO, ENTER
   ),
 
   [NUMBERS] = LAYOUT_voyager(
-    KC_TRNS, KC_TRNS , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_QUOTE, KC_LBRC, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_GRAVE, KC_2 , KC_3 , KC_4 , KC_5   ,    KC_6 , KC_7 , KC_8 , KC_9 , KC_RBRC, KC_TRNS,
-    KC_TRNS, KC_1, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_EQUAL, KC_0, KC_TRNS,
-    KC_TRNS, KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MINUS, KC_TRNS,
+    KC_TRNS, KC_TRNS , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, HOME_2, HOME_3, HOME_4, KC_5   ,    KC_6 , HOME_7, HOME_8, HOME_9, KC_TRNS, KC_TRNS,
+    KC_TRNS, HOME_1, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, HOME_0, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
   [FUNCTION] = LAYOUT_voyager(
-      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN, KC_F11, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_F11, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, HOME_F2 , HOME_F3 , HOME_F4 , KC_F5  ,    KC_F6 , HOME_F7 , HOME_F8 , HOME_F9 , KC_F12, KC_TRNS,
-    KC_TRNS, HOME_F1, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_TRNS, KC_TRNS, HOME_F10, KC_TRNS,
+    KC_TRNS, HOME_F1, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, HOME_F10, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
@@ -101,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // vim copy to clipboard = "+ instead of ||
   [BRACKETS] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, CKC_Q, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          CKC_H, CKC_J, CKC_K, CKC_L, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          CKC_H, CKC_J, CKC_K, CKC_L, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, CKC_SEMICOLON, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
@@ -117,22 +120,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // clang-format off
-// #$%^&
-
-const uint16_t PROGMEM combo_lr_raise_layer[]   = {SPACE, ENTER, COMBO_END};
-const uint16_t PROGMEM combo_lr_lower_layer[] = {TAB, BSPC, COMBO_END};
+const uint16_t PROGMEM combo_l_number[]  = {HOME_A, HOME_S, COMBO_END};
 const uint16_t PROGMEM combo_l_arrow[]  = {HOME_S, HOME_D, COMBO_END};
 const uint16_t PROGMEM combo_l_brcks[]    = {HOME_D, HOME_F, COMBO_END};
-const uint16_t PROGMEM combo_a_z[]            = {HOME_A, KC_Z, COMBO_END};
-const uint16_t PROGMEM combo_s_x[]            = {HOME_S, KC_X, COMBO_END};
-const uint16_t PROGMEM combo_d_c[]            = {HOME_D, KC_C, COMBO_END};
-const uint16_t PROGMEM combo_f_v[]            = {HOME_F, KC_V, COMBO_END};
-const uint16_t PROGMEM combo_g_b[]            = {KC_G, KC_B, COMBO_END};
-const uint16_t PROGMEM combo_h_n[]            = {KC_H, KC_N, COMBO_END};
-const uint16_t PROGMEM combo_j_m[]            = {HOME_J, KC_M, COMBO_END};
-const uint16_t PROGMEM combo_k_comma[]        = {HOME_K, KC_COMMA, COMBO_END};
-const uint16_t PROGMEM combo_l_period[]       = {HOME_L, KC_DOT, COMBO_END};
-const uint16_t PROGMEM combo_semicolon_slah[] = {HOME_SCLN, KC_SLASH, COMBO_END};
+
 
 const uint16_t PROGMEM combo_semicolon_p[] = {HOME_SCLN, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_l_o[]         = {HOME_L, KC_O, COMBO_END};
@@ -149,8 +140,6 @@ const uint16_t PROGMEM combo_d_l[]      = {HOME_D, HOME_L, COMBO_END};
 const uint16_t PROGMEM combo_enter[] = {HOME_SCLN, HOME_A, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(combo_lr_lower_layer, CKC_LDOWN),
-    COMBO(combo_lr_raise_layer, CKC_LUP),
     COMBO(combo_l_brcks, MO(BRACKETS)),
     COMBO(combo_l_arrow, MO(NAVIGATION)),
 
@@ -168,16 +157,6 @@ combo_t key_combos[] = {
     COMBO(combo_h_y, KC_RIGHT_BRACKET),
     COMBO(combo_a_q, KC_GRAVE),
 
-    COMBO(combo_a_z, KC_1),
-    COMBO(combo_s_x, KC_2),
-    COMBO(combo_d_c, KC_3),
-    COMBO(combo_f_v, KC_4),
-    COMBO(combo_g_b, KC_5),
-    COMBO(combo_h_n, KC_6),
-    COMBO(combo_j_m, KC_7),
-    COMBO(combo_k_comma, KC_8),
-    COMBO(combo_l_period, KC_9),
-    COMBO(combo_semicolon_slah, KC_0),
 };
 extern rgb_config_t rgb_matrix_config;
 
@@ -186,13 +165,13 @@ void keyboard_post_init_user(void) {
 }
 
 const uint8_t PROGMEM ledmap[][3] = {
-    [BASE]        = {170, 255, 120},  // cyan-blue: calm default
-    [NUMBERS]     = { 30, 255, 180},  // orange: numbers should scream a bit
-    [FUNCTION]    = {200, 255, 200},  // magenta-purple: powerful / meta
-    [MOUSE]       = { 90, 255, 150},  // green: movement
-    [L_UNDEFINED] = {  0,   0,   0},  // off means off
-    [BRACKETS]    = {140, 255, 180},  // teal-blue: structural
-    [NAVIGATION]  = { 10, 255, 130},  // red-orange: direction / attention
+    [BASE]        = {0, 0, 0},  // soft slate blue: calm default
+    [NUMBERS]     = {40, 90, 150},    // warm amber: noticeable but gentle
+    [FUNCTION]    = {220, 90, 160},   // muted violet: serious / meta
+    [MOUSE]       = {120, 80, 140},   // subdued green: movement, not flashy
+    [L_UNDEFINED] = {  0,   0,   0},  // off
+    [BRACKETS]    = {160, 80, 150},   // teal-gray: structural, clear but calm
+    [NAVIGATION]  = {10, 80, 130},    // deep red-orange: direction, low-key
 };
 
 typedef struct {
@@ -256,29 +235,63 @@ bool rgb_matrix_indicators_user(void) {
     return false;
 }
 
-uint8_t mod_state;
 
-#define _SPECIAL_HANDLING(a, b, c)                   \
-    do {                                             \
-        if (record->event.pressed) {                 \
-            if (mod_state & MOD_MASK_CTRL) {         \
-                del_mods(MOD_MASK_CTRL);             \
-                SEND_STRING(a SS_TAP(X_LEFT));       \
-                set_mods(mod_state);                 \
-            } else if (mod_state & MOD_MASK_SHIFT) { \
-                del_mods(MOD_MASK_SHIFT);            \
-                SEND_STRING(b);                      \
-                set_mods(mod_state);                 \
-            } else {                                 \
-                SEND_STRING(c);                      \
-            }                                        \
-        }                                            \
-    } while (0)
+static inline void with_cleared_mods(uint8_t mask, void (*fn)(void)) {
+    uint8_t mods = get_mods();
+    del_mods(mask);
+    fn();
+    set_mods(mods);
+}
+
+static void send_pair(uint16_t open, uint16_t close) {
+    tap_code16(open);
+    tap_code16(close);
+    tap_code(KC_LEFT);
+}
+
+static bool normal_shift_ctrl_record(
+    keyrecord_t *record,
+    void (*normal_fn)(void),
+    void (*shift_fn)(void),
+    void (*ctrl_fn)(void)
+) {
+    if (!record->event.pressed) return false;
+
+    uint8_t mods = get_mods();
+
+    if (mods & MOD_MASK_CTRL) {
+        with_cleared_mods(MOD_MASK_CTRL, ctrl_fn);
+    } else if (mods & MOD_MASK_SHIFT) {
+        with_cleared_mods(MOD_MASK_SHIFT, shift_fn);
+    } else {
+        normal_fn();
+    }
+    return false;
 
 
+}
+
+static void ckc_semicolon_normal(void) { send_pair(KC_QUOTE, KC_QUOTE); }
+static void ckc_semicolon_shift(void)  { send_pair(KC_DQUO, KC_DQUO); }
+static void ckc_semicolon_ctrl(void)   { send_pair(KC_GRAVE, KC_GRAVE); }
+
+static void ckc_h_normal(void) { tap_code16(KC_EXCLAIM); tap_code16(KC_EQUAL); }
+static void ckc_h_shift(void)  { tap_code16(KC_EQUAL); tap_code16(KC_GT); }
+static void ckc_h_ctrl(void)   { tap_code16(KC_MINUS); tap_code16(KC_GT); }
+
+static void ckc_j_normal(void) { send_pair(KC_LPRN, KC_RPRN); }
+static void ckc_j_shift(void)  { tap_code16(KC_RPRN); }
+static void ckc_j_ctrl(void)   { tap_code16(KC_LPRN); }
+
+static void ckc_k_normal(void) { send_pair(KC_LBRC, KC_RBRC); }
+static void ckc_k_shift(void)  { tap_code16(KC_RBRC); }
+static void ckc_k_ctrl(void)   { tap_code16(KC_LBRC); }
+
+static void ckc_l_normal(void) { send_pair(KC_LCBR, KC_RCBR); }
+static void ckc_l_shift(void)  { tap_code16(KC_RCBR); }
+static void ckc_l_ctrl(void)   { tap_code16(KC_LCBR); }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    mod_state = get_mods();
     switch (keycode) {
         case CKC_LDOWN:
             if (record->event.pressed) {
@@ -289,7 +302,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     layer_move(current_layer - 1);
                 }
             }
-            break;
+            return false;
         case CKC_LUP:
             if (record->event.pressed) {
                 uint8_t current_layer = get_highest_layer(layer_state);
@@ -299,25 +312,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     layer_move(current_layer + 1);
                 }
             }
-            break;
-        case CKC_H:
-            _SPECIAL_HANDLING("\"\"", "=>", "->");
-            break;
+            return false;
         case CKC_SEMICOLON:
-            _SPECIAL_HANDLING("''", "&&", "||");
-            break;
+            return normal_shift_ctrl_record(record, ckc_semicolon_normal, ckc_semicolon_shift, ckc_semicolon_ctrl);
+        case CKC_H:
+            return normal_shift_ctrl_record(record, ckc_h_normal, ckc_h_shift, ckc_h_ctrl);
         case CKC_J:
-            _SPECIAL_HANDLING("()", ")", "(");
-            break;
+            return normal_shift_ctrl_record(record, ckc_j_normal, ckc_j_shift, ckc_j_ctrl);
         case CKC_K:
-            _SPECIAL_HANDLING("[]", "]", "[");
-            break;
+            return normal_shift_ctrl_record(record, ckc_k_normal, ckc_k_shift, ckc_k_ctrl);
         case CKC_L:
-            _SPECIAL_HANDLING("{}", "}", "{");
-            break;
-        case CKC_Q:
-            _SPECIAL_HANDLING("``", "~", "`");
-            break;
+            return normal_shift_ctrl_record(record, ckc_l_normal, ckc_l_shift, ckc_l_ctrl);
     }
     return true;
 
