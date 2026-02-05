@@ -47,72 +47,70 @@ enum custom_keycodes {
     CKC_LDOWN,
     // don't collaps
 };
+
+enum layouts {
+    BASE = 0,
+    NUMBERS,
+    FUNCTION,
+    MOUSE,
+    L_UNDEFINED,
+    // Special layer that should not be circled
+    BRACKETS,
+    NAVIGATION,
+
+};
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  // TODO: when familiar disable additional keys
-  [0] = LAYOUT_voyager(
+  [BASE] = LAYOUT_voyager(
     KC_NO,KC_NO, KC_W, KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O, KC_NO, KC_NO,
     KC_NO, KC_Q, HOME_S, HOME_D, HOME_F, KC_G ,   KC_H, HOME_J, HOME_K, HOME_L, KC_P, KC_NO,
     CKC_LUP,HOME_A, KC_X, KC_C, KC_V, KC_B,   KC_N, KC_M, KC_COMMA, KC_DOT, HOME_SCLN,CKC_LDOWN,
-    KC_NO,  KC_Z, KC_NO, KC_NO, KC_F4, TAB,   BSPC, KC_F7, KC_NO, KC_NO, KC_SLSH,KC_NO,
+    KC_NO,  KC_Z, KC_NO, KC_NO, TAB, TG(FUNCTION),   TG(NUMBERS), BSPC, KC_NO, KC_NO, KC_SLSH,KC_NO,
     SPACE, KC_NO,   KC_NO, ENTER
   ),
 
-  [1] = LAYOUT_voyager(
+  [NUMBERS] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_QUOTE, KC_LBRC, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_GRAVE, KC_2 , KC_3 , KC_4 , KC_5   ,    KC_6 , KC_7 , KC_8 , KC_9 , KC_RBRC, KC_TRNS,
     KC_TRNS, KC_1, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_EQUAL, KC_0, KC_TRNS,
     KC_TRNS, KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MINUS, KC_TRNS,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
-  [2] = LAYOUT_voyager(
-      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN, KC_F11, KC_NO, KC_NO,
-    KC_TRNS, KC_NO, HOME_F2 , HOME_F3 , HOME_F4 , KC_F5  ,    KC_F6 , HOME_F7 , HOME_F8 , HOME_F9 , KC_F12, KC_TRNS,
-    KC_TRNS, HOME_F1, KC_NO, KC_NO, KC_NO, KC_NO,     KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_NO, KC_NO, HOME_F10, KC_TRNS,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+  [FUNCTION] = LAYOUT_voyager(
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN, KC_F11, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, HOME_F2 , HOME_F3 , HOME_F4 , KC_F5  ,    KC_F6 , HOME_F7 , HOME_F8 , HOME_F9 , KC_F12, KC_TRNS,
+    KC_TRNS, HOME_F1, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_TRNS, KC_TRNS, HOME_F10, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
   ),
-  [3] = LAYOUT_voyager(
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                                                                      QK_MOUSE_WHEEL_LEFT, QK_MOUSE_WHEEL_DOWN, QK_MOUSE_WHEEL_UP, QK_MOUSE_WHEEL_RIGHT, KC_NO, KC_NO,
-    KC_TRNS, KC_NO, QK_MOUSE_BUTTON_2, QK_MOUSE_BUTTON_3, QK_MOUSE_BUTTON_4, QK_MOUSE_BUTTON_5,          QK_MOUSE_CURSOR_LEFT, QK_MOUSE_CURSOR_DOWN, QK_MOUSE_CURSOR_UP, QK_MOUSE_CURSOR_RIGHT, KC_NO, KC_TRNS,
-    KC_TRNS, QK_MOUSE_BUTTON_1, QK_MOUSE_ACCELERATION_1, QK_MOUSE_ACCELERATION_2, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS,
-    KC_NO, QK_MOUSE_ACCELERATION_0, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+  [MOUSE] = LAYOUT_voyager(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                                                      QK_MOUSE_WHEEL_LEFT, QK_MOUSE_WHEEL_DOWN, QK_MOUSE_WHEEL_UP, QK_MOUSE_WHEEL_RIGHT, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, QK_MOUSE_BUTTON_2, QK_MOUSE_BUTTON_3, QK_MOUSE_BUTTON_4, QK_MOUSE_BUTTON_5,          QK_MOUSE_CURSOR_LEFT, QK_MOUSE_CURSOR_DOWN, QK_MOUSE_CURSOR_UP, QK_MOUSE_CURSOR_RIGHT, KC_TRNS, KC_TRNS,
+    KC_TRNS, QK_MOUSE_BUTTON_1, QK_MOUSE_ACCELERATION_1, QK_MOUSE_ACCELERATION_2, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, QK_MOUSE_ACCELERATION_0, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
-  [4] = LAYOUT_voyager(
-      KC_TRNS, LSFT(KC_GRAVE), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, LSFT(KC_QUOTE), LSFT(KC_LBRC), KC_TRNS, KC_TRNS,
-   KC_TRNS, KC_TRNS, LSFT(KC_2) , LSFT(KC_3) , LSFT(KC_4) , LSFT(KC_5)   ,    LSFT(KC_6) , LSFT(KC_7) , LSFT(KC_8) , LSFT(KC_9) , LSFT(KC_RBRC), KC_TRNS,
-   KC_TRNS, LSFT(KC_1) , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, LSFT(KC_EQUAL), LSFT(KC_MINUS), LSFT(KC_0) ,
-    KC_TRNS, LSFT(KC_BSLS), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
+  [L_UNDEFINED] = LAYOUT_voyager(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
-  // [2] = LAYOUT_voyager(
-  //   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-  //   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_MEDIA_PREV_TRACK, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, KC_MEDIA_NEXT_TRACK, KC_MEDIA_PLAY_PAUSE, KC_TRNS,
-  //   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS,
-  //   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_TRNS, KC_TRNS,
-  //   KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS
-  // ),
+  // Here are special layer defined
   // vim copy to clipboard = "+ instead of ||
-  [5] = LAYOUT_voyager(
+  [BRACKETS] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, CKC_Q, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          CKC_H, CKC_J, CKC_K, CKC_L, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, CKC_SEMICOLON, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
-  [6] = LAYOUT_voyager(
+  [NAVIGATION] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_MEDIA_PLAY_PAUSE, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_MEDIA_PREV_TRACK, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, KC_MEDIA_NEXT_TRACK, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_AUDIO_MUTE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
-  ),
-  [7] = LAYOUT_voyager(
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
 
@@ -153,8 +151,8 @@ const uint16_t PROGMEM combo_enter[] = {HOME_SCLN, HOME_A, COMBO_END};
 combo_t key_combos[] = {
     COMBO(combo_lr_lower_layer, CKC_LDOWN),
     COMBO(combo_lr_raise_layer, CKC_LUP),
-    COMBO(combo_l_brcks, MO(5)),
-    COMBO(combo_l_arrow, MO(6)),
+    COMBO(combo_l_brcks, MO(BRACKETS)),
+    COMBO(combo_l_arrow, MO(NAVIGATION)),
 
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_tab, KC_TAB),
@@ -181,24 +179,21 @@ combo_t key_combos[] = {
     COMBO(combo_l_period, KC_9),
     COMBO(combo_semicolon_slah, KC_0),
 };
-
 extern rgb_config_t rgb_matrix_config;
 
 void keyboard_post_init_user(void) {
     rgb_matrix_enable();
 }
 
-#define NORMAL {0, 0, 69}
-#define NUM {210, 210, 69}
-#define FUN {255, 255, 69}
-#define SYM {245, 245, 69}
-#define MOD {42, 42, 69}
-#define OUT {0, 0, 0}
-// clang-format off
 const uint8_t PROGMEM ledmap[][3] = {
-    NORMAL, NUM, FUN, SYM, MOD, OUT,
+    [BASE]        = {170, 255, 120},  // cyan-blue: calm default
+    [NUMBERS]     = { 30, 255, 180},  // orange: numbers should scream a bit
+    [FUNCTION]    = {200, 255, 200},  // magenta-purple: powerful / meta
+    [MOUSE]       = { 90, 255, 150},  // green: movement
+    [L_UNDEFINED] = {  0,   0,   0},  // off means off
+    [BRACKETS]    = {140, 255, 180},  // teal-blue: structural
+    [NAVIGATION]  = { 10, 255, 130},  // red-orange: direction / attention
 };
-
 
 typedef struct {
     uint8_t row;
@@ -233,7 +228,7 @@ HSV get_color(int layer, uint8_t i) {
         keycode =  pgm_read_word(&keymaps[0][row][col]);
         layer = 0;
     }
-    const uint8_t *lm = keycode == KC_NO ? ledmap[5] : ledmap[layer];
+    const uint8_t *lm = keycode == KC_NO ? ledmap[L_UNDEFINED] : ledmap[layer];
 
     HSV hsv = {
         .h = pgm_read_byte(&lm[0]),
@@ -280,32 +275,28 @@ uint8_t mod_state;
         }                                            \
     } while (0)
 
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     mod_state = get_mods();
     switch (keycode) {
         case CKC_LDOWN:
             if (record->event.pressed) {
-                if (IS_LAYER_ON(1)) {
-                    layer_move(0);
-                } else if (IS_LAYER_ON(2)) {
-                    layer_move(1);
-                } else if (IS_LAYER_ON(3)) {
-                    layer_move(2);
+                uint8_t current_layer = get_highest_layer(layer_state);
+                if (current_layer == 0) {
+                    layer_move(L_UNDEFINED - 1);
                 } else {
-                    layer_move(3);
+                    layer_move(current_layer - 1);
                 }
             }
             break;
         case CKC_LUP:
             if (record->event.pressed) {
-                if (IS_LAYER_ON(1)) {
-                    layer_move(2);
-                } else if (IS_LAYER_ON(2)) {
-                    layer_move(3);
-                } else if (IS_LAYER_ON(3)) {
-                    layer_move(0);
+                uint8_t current_layer = get_highest_layer(layer_state);
+                if (current_layer == (L_UNDEFINED -1)) {
+                    layer_move(BASE);
                 } else {
-                    layer_move(1);
+                    layer_move(current_layer + 1);
                 }
             }
             break;
@@ -329,4 +320,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
     }
     return true;
+
 }
