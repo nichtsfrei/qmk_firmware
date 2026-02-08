@@ -51,6 +51,21 @@ enum custom_keycodes {
     // don't collaps
 };
 
+enum unicode_names {
+    AE, AE_CAP, UE, UE_CAP, OE, OE_CAP, SS,
+};
+
+const uint32_t unicode_map[] = {
+    [AE]     = 0x00E4, // ä
+    [AE_CAP] = 0x00C4, // Ä
+    [UE]     = 0x00FC, // ü
+    [UE_CAP] = 0x00DC, // Ü
+    [OE]     = 0x00F6, // ö
+    [OE_CAP] = 0x00D6, // Ö
+    [SS]     = 0x00DF, // ß
+};
+
+
 enum layouts {
     BASE = 0,
     NUMBERS,
@@ -60,6 +75,7 @@ enum layouts {
     // Special layer that should not be circled
     BRACKETS,
     NAVIGATION,
+    UMLAUTE,
 
 };
 // clang-format off
@@ -101,11 +117,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
   // Here are special layer defined
-  // vim copy to clipboard = "+ instead of ||
   [BRACKETS] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          CKC_H, CKC_J, CKC_K, CKC_L, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, CKC_SEMICOLON, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+  ),
+  [UMLAUTE] = LAYOUT_voyager(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, UM(SS), UP(AE, AE_CAP), UP(UE, UE_CAP), KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UP(OE, OE_CAP), KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
@@ -120,7 +142,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // clang-format off
-const uint16_t PROGMEM combo_l_number[]  = {HOME_A, HOME_S, COMBO_END};
+const uint16_t PROGMEM combo_l_umlaute[]  = {HOME_A, HOME_S, COMBO_END};
 const uint16_t PROGMEM combo_l_arrow[]  = {HOME_S, HOME_D, COMBO_END};
 const uint16_t PROGMEM combo_l_brcks[]    = {HOME_D, HOME_F, COMBO_END};
 
@@ -140,6 +162,7 @@ const uint16_t PROGMEM combo_d_l[]      = {HOME_D, HOME_L, COMBO_END};
 const uint16_t PROGMEM combo_enter[] = {HOME_SCLN, HOME_A, COMBO_END};
 
 combo_t key_combos[] = {
+    COMBO(combo_l_umlaute, MO(UMLAUTE)),
     COMBO(combo_l_brcks, MO(BRACKETS)),
     COMBO(combo_l_arrow, MO(NAVIGATION)),
 
@@ -161,17 +184,19 @@ combo_t key_combos[] = {
 extern rgb_config_t rgb_matrix_config;
 
 void keyboard_post_init_user(void) {
+    set_unicode_input_mode(UNICODE_MODE_LINUX);
     rgb_matrix_enable();
 }
 
 const uint8_t PROGMEM ledmap[][3] = {
-    [BASE]        = {0, 0, 0},  // soft slate blue: calm default
+    [BASE]        = {0, 0, 0},  // off, default
     [NUMBERS]     = {40, 90, 150},    // warm amber: noticeable but gentle
     [FUNCTION]    = {220, 90, 160},   // muted violet: serious / meta
     [MOUSE]       = {120, 80, 140},   // subdued green: movement, not flashy
     [L_UNDEFINED] = {  0,   0,   0},  // off
     [BRACKETS]    = {160, 80, 150},   // teal-gray: structural, clear but calm
     [NAVIGATION]  = {10, 80, 130},    // deep red-orange: direction, low-key
+    [UMLAUTE]     = {100,  70, 160},   // cool cyan: language / diacritics
 };
 
 typedef struct {
@@ -291,7 +316,9 @@ static void ckc_l_normal(void) { send_pair(KC_LCBR, KC_RCBR); }
 static void ckc_l_shift(void)  { tap_code16(KC_RCBR); }
 static void ckc_l_ctrl(void)   { tap_code16(KC_LCBR); }
 
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
     switch (keycode) {
         case CKC_LDOWN:
             if (record->event.pressed) {
