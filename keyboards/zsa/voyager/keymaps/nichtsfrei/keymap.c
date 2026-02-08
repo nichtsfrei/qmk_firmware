@@ -18,7 +18,7 @@
 
 
 #define HOME_1 LGUI_T(KC_1)
-#define HOME_2 LALT(KC_2)
+#define HOME_2 LALT_T(KC_2)
 #define HOME_3 LCTL_T(KC_3)
 #define HOME_4 LSFT_T(KC_4)
 
@@ -84,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,KC_NO, KC_W, KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O, KC_NO, KC_NO,
     KC_NO, KC_Q, HOME_S, HOME_D, HOME_F, KC_G ,   KC_H, HOME_J, HOME_K, HOME_L, KC_P, KC_NO,
     CKC_LUP,HOME_A, KC_X, KC_C, KC_V, KC_B,   KC_N, KC_M, KC_COMMA, KC_DOT, HOME_SCLN,CKC_LDOWN,
-    KC_NO,  KC_Z, KC_NO, KC_NO, TAB, MO(FUNCTION),   MO(NUMBERS), BSPC, KC_NO, KC_NO, KC_SLSH,KC_NO,
+    KC_NO,  KC_Z, KC_NO, KC_NO, TAB, LT(FUNCTION, KC_SPACE),   LT(NUMBERS, KC_ENTER), BSPC, KC_NO, KC_NO, KC_SLSH,KC_NO,
     SPACE, KC_NO,   KC_NO, ENTER
   ),
 
@@ -119,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // Here are special layer defined
   [BRACKETS] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          CKC_H, CKC_J, CKC_K, CKC_L, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          CKC_H  , CKC_J  , CKC_K  , CKC_L  , KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, CKC_SEMICOLON, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
@@ -140,6 +140,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
 };
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  return update_tri_layer_state(state, FUNCTION, NUMBERS, MOUSE);
+}
 
 // clang-format off
 const uint16_t PROGMEM combo_l_umlaute[]  = {HOME_A, HOME_S, COMBO_END};
