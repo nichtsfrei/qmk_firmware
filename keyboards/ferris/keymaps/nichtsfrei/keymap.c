@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
-//#include "raw_hid.h"
+#include "raw_hid.h"
+
 // qmk flash -kb ferris/sweep -km nichtsfrei -e CONVERT_TO=promicro_rp2040 -bl uf2-split-left
 // qmk flash -kb ferris/sweep -km nichtsfrei -e CONVERT_TO=sparkfun_pm2040
 
@@ -50,6 +51,9 @@ void matrix_init_user(void) {
 #define HOME_9 RALT_T(KC_9)
 #define HOME_0 RGUI_T(KC_0)
 
+#define NUM_LAYER LT(NUMBERS, KC_NO)
+#define FUN_LAYER LT(FUNCTION, KC_NO)
+
 enum unicode_names {
     AE, AE_CAP, UE, UE_CAP, OE, OE_CAP, SS,
 };
@@ -85,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_Q, KC_W, KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O, KC_P,
     HOME_A, HOME_S, HOME_D, HOME_F, KC_G ,   KC_H, HOME_J, HOME_K, HOME_L, HOME_SCLN,
     KC_Z, KC_X, KC_C, KC_V, KC_B   ,   KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH,
-    MO(FUNCTION), SPACE,   ENTER, MO(NUMBERS)
+    FUN_LAYER, SPACE,   ENTER, NUM_LAYER
   ),
   [NUMBERS] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -144,9 +148,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, FUNCTION, NUMBERS, MOUSE);
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case FUN_LAYER:
+        case NUM_LAYER:
+            if (record->tap.count) {
+                if (record->event.pressed) {
+                    layer_lock_invert(get_highest_layer(layer_state));
+                }
+                return false;
+            }
+            break;
+
+    }
+    return true;
 }
+
 
 // clang-format off
 const uint16_t PROGMEM combo_l_umlaute[]  = {HOME_A, HOME_S, COMBO_END};
@@ -194,3 +212,27 @@ combo_t key_combos[] = {
 
 };
 
+
+static layer_state_t send_state(layer_state_t state) {
+    uint8_t data[32] = {0};
+    data[0]          = 'L';
+    data[1]          = 1;
+    data[31]         = get_highest_layer(state);
+    raw_hid_send(data, 32);
+    return state;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  return send_state(update_tri_layer_state(state, FUNCTION, NUMBERS, MOUSE));
+}
+
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+    return send_state(state);
+}
+
+
+void raw_hid_receive(uint8_t *data, uint8_t length) {
+    if (data[0] == 'L') {
+        send_state(layer_state);
+    }
+}
