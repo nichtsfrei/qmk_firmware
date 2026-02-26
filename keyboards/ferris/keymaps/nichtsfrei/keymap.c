@@ -58,6 +58,14 @@ const uint32_t unicode_map[] = {
 };
 
 
+enum custom_keycodes {
+    CKC_H = SAFE_RANGE,
+    CKC_J,
+    CKC_K,
+    CKC_L,
+    CKC_SEMICOLON,
+    // don't collaps
+};
 
 enum layouts {
     BASE = 0,
@@ -87,8 +95,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   // Here are special layer defined
   [BRACKETS] = LAYOUT(
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_RPRN, KC_RBRC, KC_RCBR, KC_HASH,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_AMPR, KC_LPRN, KC_LBRC, KC_LCBR, KC_EXLM,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          CKC_H, CKC_J, CKC_K, CKC_L, CKC_SEMICOLON,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
@@ -154,20 +162,14 @@ const uint16_t PROGMEM combo_a_q[]         = {HOME_A, KC_Q, COMBO_END};
 const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, HOME_SCLN, COMBO_END};
 const uint16_t PROGMEM combo_tab[] = {HOME_F, HOME_J, COMBO_END};
 const uint16_t PROGMEM combo_enter[] = {HOME_SCLN, HOME_A, COMBO_END};
-  // h => KC_AMPR, KC_LEFT
-  // l => KC_LCBR, KC_RIGHT
-  // d => HOME_3, LSFT(KC_3)
+
 const uint16_t PROGMEM combo_bspc[]      = {HOME_D, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_bspc1[]      = {HOME_3, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_bspc2[]      = {LSFT(KC_3), KC_H, COMBO_END};
-const uint16_t PROGMEM combo_bspc3[]      = {HOME_D, KC_AMPR, COMBO_END};
-const uint16_t PROGMEM combo_bspc4[]      = {HOME_D, KC_LEFT, COMBO_END};
 
 const uint16_t PROGMEM combo_del[]      = {HOME_D, HOME_L, COMBO_END};
 const uint16_t PROGMEM combo_del1[]      = {HOME_3, HOME_L, COMBO_END};
 const uint16_t PROGMEM combo_del2[]      = {LSFT(KC_3), HOME_L, COMBO_END};
-const uint16_t PROGMEM combo_del3[]      = {HOME_D, KC_LCBR, COMBO_END};
-const uint16_t PROGMEM combo_del4[]      = {HOME_D, KC_RIGHT, COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(combo_l_umlaute, OSL(UMLAUTE)),
@@ -184,13 +186,9 @@ combo_t key_combos[] = {
     COMBO(combo_bspc, KC_BSPC),
     COMBO(combo_bspc1, KC_BSPC),
     COMBO(combo_bspc2, KC_BSPC),
-    COMBO(combo_bspc3, KC_BSPC),
-    COMBO(combo_bspc4, KC_BSPC),
     COMBO(combo_del, KC_DELETE),
     COMBO(combo_del1, KC_DELETE),
     COMBO(combo_del2, KC_DELETE),
-    COMBO(combo_del3, KC_DELETE),
-    COMBO(combo_del4, KC_DELETE),
 
     COMBO(combo_enter, KC_ENTER),
 
@@ -201,7 +199,6 @@ combo_t key_combos[] = {
     COMBO(combo_y_u, KC_LEFT_BRACKET),
     COMBO(combo_h_y, KC_RIGHT_BRACKET),
     COMBO(combo_a_q, KC_GRAVE),
-
 };
 
 
@@ -227,4 +224,77 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     if (data[0] == 'L') {
         send_state(layer_state);
     }
+}
+
+
+static inline void with_cleared_mods(uint8_t mask, void (*fn)(void)) {
+    uint8_t mods = get_mods();
+    del_mods(mask);
+    fn();
+    set_mods(mods);
+}
+
+static void send_pair(uint16_t open, uint16_t close) {
+    tap_code16(open);
+    tap_code16(close);
+    tap_code(KC_LEFT);
+}
+
+static bool normal_shift_ctrl_record(
+    keyrecord_t *record,
+    void (*normal_fn)(void),
+    void (*shift_fn)(void),
+    void (*ctrl_fn)(void)
+) {
+    if (!record->event.pressed) return false;
+
+    uint8_t mods = get_mods();
+
+    if (mods & MOD_MASK_CTRL) {
+        with_cleared_mods(MOD_MASK_CTRL, ctrl_fn);
+    } else if (mods & MOD_MASK_SHIFT) {
+        with_cleared_mods(MOD_MASK_SHIFT, shift_fn);
+    } else {
+        normal_fn();
+    }
+    return false;
+
+
+}
+
+static void ckc_semicolon_normal(void) { send_pair(KC_QUOTE, KC_QUOTE); }
+static void ckc_semicolon_shift(void)  { send_pair(KC_DQUO, KC_DQUO); }
+static void ckc_semicolon_ctrl(void)   { send_pair(KC_GRAVE, KC_GRAVE); }
+
+static void ckc_h_normal(void) { tap_code16(KC_EXCLAIM); tap_code16(KC_EQUAL); }
+static void ckc_h_shift(void)  { tap_code16(KC_EQUAL); tap_code16(KC_GT); }
+static void ckc_h_ctrl(void)   { tap_code16(KC_MINUS); tap_code16(KC_GT); }
+
+static void ckc_j_normal(void) { send_pair(KC_LPRN, KC_RPRN); }
+static void ckc_j_shift(void)  { tap_code16(KC_RPRN); }
+static void ckc_j_ctrl(void)   { tap_code16(KC_LPRN); }
+
+static void ckc_k_normal(void) { send_pair(KC_LBRC, KC_RBRC); }
+static void ckc_k_shift(void)  { tap_code16(KC_RBRC); }
+static void ckc_k_ctrl(void)   { tap_code16(KC_LBRC); }
+
+static void ckc_l_normal(void) { send_pair(KC_LCBR, KC_RCBR); }
+static void ckc_l_shift(void)  { tap_code16(KC_RCBR); }
+static void ckc_l_ctrl(void)   { tap_code16(KC_LCBR); }
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case CKC_SEMICOLON:
+            return normal_shift_ctrl_record(record, ckc_semicolon_normal, ckc_semicolon_shift, ckc_semicolon_ctrl);
+        case CKC_H:
+            return normal_shift_ctrl_record(record, ckc_h_normal, ckc_h_shift, ckc_h_ctrl);
+        case CKC_J:
+            return normal_shift_ctrl_record(record, ckc_j_normal, ckc_j_shift, ckc_j_ctrl);
+        case CKC_K:
+            return normal_shift_ctrl_record(record, ckc_k_normal, ckc_k_shift, ckc_k_ctrl);
+        case CKC_L:
+            return normal_shift_ctrl_record(record, ckc_l_normal, ckc_l_shift, ckc_l_ctrl);
+    }
+    return true;
+
 }
