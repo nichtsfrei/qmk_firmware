@@ -40,19 +40,8 @@ void matrix_init_user(void) {
 #define HOME_L RALT_T(KC_L)
 #define HOME_SCLN RGUI_T(KC_SCLN)
 
-#define HOME_F7 LSFT_T(KC_F7)
-#define HOME_F8 RCTL_T(KC_F8)
-#define HOME_F9 RALT_T(KC_F9)
-#define HOME_F10 RGUI_T(KC_F10)
-
-
-#define HOME_7 LSFT_T(KC_7)
-#define HOME_8 RCTL_T(KC_8)
-#define HOME_9 RALT_T(KC_9)
-#define HOME_0 RGUI_T(KC_0)
-
-#define NUM_LAYER LT(NUMBERS, KC_NO)
-#define FUN_LAYER LT(FUNCTION, KC_NO)
+#define REPEAT QK_REPEAT_KEY
+#define BACKBSE TO(0)
 
 enum unicode_names {
     AE, AE_CAP, UE, UE_CAP, OE, OE_CAP, SS,
@@ -72,8 +61,6 @@ const uint32_t unicode_map[] = {
 
 enum layouts {
     BASE = 0,
-    NUMBERS,
-    FUNCTION,
     MOUSE,
     L_UNDEFINED,
     // Special layer that should not be circled
@@ -82,6 +69,7 @@ enum layouts {
     UMLAUTE,
     LNUM,
     LNUMSHFT,
+    LFUN,
 };
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -89,19 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_Q, KC_W, KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O, KC_P,
     HOME_A, HOME_S, HOME_D, HOME_F, KC_G ,   KC_H, HOME_J, HOME_K, HOME_L, HOME_SCLN,
     KC_Z, KC_X, KC_C, KC_V, KC_B   ,   KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH,
-    FUN_LAYER, SPACE,   ENTER, NUM_LAYER
-  ),
-  [NUMBERS] = LAYOUT(
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    HOME_1, HOME_2, HOME_3, HOME_4, KC_5,    KC_6 , HOME_7, HOME_8, HOME_9, HOME_0,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                        KC_TRNS, KC_TRNS
-  ),
-  [FUNCTION] = LAYOUT(
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN, KC_F11, KC_F12,
-    KC_F1 , KC_F2 , KC_F3 , KC_F4 , KC_F5  ,    KC_F6 , KC_F7 , KC_F8 , KC_F9 , KC_F10 ,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                             KC_TRNS, KC_TRNS
+    BACKBSE, SPACE,   ENTER, REPEAT
   ),
   [MOUSE] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                                                      QK_MOUSE_WHEEL_LEFT, QK_MOUSE_WHEEL_DOWN, QK_MOUSE_WHEEL_UP, QK_MOUSE_WHEEL_RIGHT, KC_TRNS,
@@ -109,7 +85,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     QK_MOUSE_ACCELERATION_0, QK_MOUSE_ACCELERATION_1, QK_MOUSE_ACCELERATION_2, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
-
   // Here are special layer defined
   [BRACKETS] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_RPRN, KC_RBRC, KC_RCBR, KC_HASH,
@@ -132,10 +107,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
 
+
   [LNUM] = LAYOUT(
     KC_6, KC_7, KC_8, KC_9, KC_0,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_1, KC_2, KC_3, KC_4, KC_5,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    HOME_1, HOME_2, HOME_3, HOME_4, KC_5,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+  ),
+
+  [LFUN] = LAYOUT(
+    KC_F6, KC_F7, KC_F8, KC_F9, KC_F10,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    HOME_F1, HOME_F2, HOME_F3, HOME_F4, KC_F5,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_F11, KC_F12, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
 
@@ -149,30 +132,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case FUN_LAYER:
-        case NUM_LAYER:
-            if (record->tap.count) {
-                if (record->event.pressed) {
-                    layer_lock_invert(get_highest_layer(layer_state));
-                }
-                return false;
-            }
-            break;
-
-    }
-    return true;
-}
-
-
 // clang-format off
 const uint16_t PROGMEM combo_l_umlaute[]  = {HOME_A, HOME_S, COMBO_END};
 const uint16_t PROGMEM combo_l_arrow[]  = {HOME_S, HOME_D, COMBO_END};
 const uint16_t PROGMEM combo_l_brcks[]    = {HOME_D, HOME_F, COMBO_END};
+const uint16_t PROGMEM combo_mouse[]    = {SPACE, ENTER, COMBO_END};
 
 const uint16_t PROGMEM combo_l_lnum[]    = {HOME_J, HOME_K, COMBO_END};
 const uint16_t PROGMEM combo_l_lnumshft[]    = {HOME_L, HOME_K, COMBO_END};
+const uint16_t PROGMEM combo_l_lfun[]    = {HOME_L, HOME_SCLN, COMBO_END};
 
 
 const uint16_t PROGMEM combo_semicolon_p[] = {HOME_SCLN, KC_P, COMBO_END};
@@ -185,21 +153,45 @@ const uint16_t PROGMEM combo_a_q[]         = {HOME_A, KC_Q, COMBO_END};
 
 const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, HOME_SCLN, COMBO_END};
 const uint16_t PROGMEM combo_tab[] = {HOME_F, HOME_J, COMBO_END};
-const uint16_t PROGMEM combo_d_h[]      = {HOME_D, KC_H, COMBO_END};
-const uint16_t PROGMEM combo_d_l[]      = {HOME_D, HOME_L, COMBO_END};
 const uint16_t PROGMEM combo_enter[] = {HOME_SCLN, HOME_A, COMBO_END};
+  // h => KC_AMPR, KC_LEFT
+  // l => KC_LCBR, KC_RIGHT
+  // d => HOME_3, LSFT(KC_3)
+const uint16_t PROGMEM combo_bspc[]      = {HOME_D, KC_H, COMBO_END};
+const uint16_t PROGMEM combo_bspc1[]      = {HOME_3, KC_H, COMBO_END};
+const uint16_t PROGMEM combo_bspc2[]      = {LSFT(KC_3), KC_H, COMBO_END};
+const uint16_t PROGMEM combo_bspc3[]      = {HOME_D, KC_AMPR, COMBO_END};
+const uint16_t PROGMEM combo_bspc4[]      = {HOME_D, KC_LEFT, COMBO_END};
+
+const uint16_t PROGMEM combo_del[]      = {HOME_D, HOME_L, COMBO_END};
+const uint16_t PROGMEM combo_del1[]      = {HOME_3, HOME_L, COMBO_END};
+const uint16_t PROGMEM combo_del2[]      = {LSFT(KC_3), HOME_L, COMBO_END};
+const uint16_t PROGMEM combo_del3[]      = {HOME_D, KC_LCBR, COMBO_END};
+const uint16_t PROGMEM combo_del4[]      = {HOME_D, KC_RIGHT, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(combo_l_umlaute, MO(UMLAUTE)),
-    COMBO(combo_l_brcks, MO(BRACKETS)),
-    COMBO(combo_l_arrow, MO(NAVIGATION)),
-    COMBO(combo_l_lnum, MO(LNUM)),
-    COMBO(combo_l_lnumshft, MO(LNUMSHFT)),
+    COMBO(combo_l_umlaute, OSL(UMLAUTE)),
+    COMBO(combo_l_brcks, OSL(BRACKETS)),
+    COMBO(combo_l_arrow, OSL(NAVIGATION)),
+    COMBO(combo_l_lnum, OSL(LNUM)),
+    COMBO(combo_l_lnumshft, OSL(LNUMSHFT)),
+    COMBO(combo_l_lfun, OSL(LFUN)),
+    COMBO(combo_mouse, TG(MOUSE)),
 
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_tab, KC_TAB),
-    COMBO(combo_d_h, KC_BSPC),
-    COMBO(combo_d_l, KC_DELETE),
+
+    COMBO(combo_bspc, KC_BSPC),
+    COMBO(combo_bspc1, KC_BSPC),
+    COMBO(combo_bspc2, KC_BSPC),
+    COMBO(combo_bspc3, KC_BSPC),
+    COMBO(combo_bspc4, KC_BSPC),
+    COMBO(combo_del, KC_DELETE),
+    COMBO(combo_del1, KC_DELETE),
+    COMBO(combo_del2, KC_DELETE),
+    COMBO(combo_del3, KC_DELETE),
+    COMBO(combo_del4, KC_DELETE),
+
     COMBO(combo_enter, KC_ENTER),
 
     COMBO(combo_semicolon_p, KC_EQUAL),
@@ -223,7 +215,7 @@ static layer_state_t send_state(layer_state_t state) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  return send_state(update_tri_layer_state(state, FUNCTION, NUMBERS, MOUSE));
+  return send_state(state);
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
