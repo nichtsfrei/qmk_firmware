@@ -41,7 +41,7 @@ void matrix_init_user(void) {
 #define HOME_SCLN RGUI_T(KC_SCLN)
 
 #define REPEAT LT(LNUM, QK_REPEAT_KEY)
-#define BACKBSE LT(BRACKETS, TO(0))
+#define BACKBSE LT(BRACKETS, TT(0))
 
 enum unicode_names {
     AE, AE_CAP, UE, UE_CAP, OE, OE_CAP, SS,
