@@ -12,36 +12,34 @@ void matrix_init_user(void) {
   //debug_mouse=true;
 }
 
-#define ENTER LCTL_T(KC_ENTER)
-#define SPACE LSFT_T(KC_SPACE)
-#define TAB LALT_T(KC_TAB)
-#define BSPC LGUI_T(KC_BSPC)
 
 // Left-hand home row
-#define HOME_A LGUI_T(KC_A)
-#define HOME_S LALT_T(KC_S)
-#define HOME_D LCTL_T(KC_D)
-#define HOME_F LSFT_T(KC_F)
+#define HOME_A KC_A
+#define HOME_S KC_S
+#define HOME_D KC_D
+#define HOME_F KC_F
 
-#define HOME_F1 LGUI_T(KC_F1)
-#define HOME_F2 LALT_T(KC_F2)
-#define HOME_F3 LCTL_T(KC_F3)
-#define HOME_F4 LSFT_T(KC_F4)
+#define HOME_F1 KC_F1
+#define HOME_F2 KC_F2
+#define HOME_F3 KC_F3
+#define HOME_F4 KC_F4
 
 
-#define HOME_1 LGUI_T(KC_1)
-#define HOME_2 LALT_T(KC_2)
-#define HOME_3 LCTL_T(KC_3)
-#define HOME_4 LSFT_T(KC_4)
+#define HOME_1 KC_1
+#define HOME_2 KC_2
+#define HOME_3 KC_3
+#define HOME_4 KC_4
 
 // Right-hand home row
-#define HOME_J LSFT_T(KC_J)
-#define HOME_K RCTL_T(KC_K)
-#define HOME_L RALT_T(KC_L)
-#define HOME_SCLN RGUI_T(KC_SCLN)
+#define HOME_J KC_J
+#define HOME_K KC_K
+#define HOME_L KC_L
+#define HOME_SCLN KC_SCLN
 
-#define REPEAT LT(LNUM, QK_REPEAT_KEY)
-#define BACKBSE LT(BRACKETS, TT(0))
+#define SPACE LSFT_T(KC_SPACE)
+#define BACKBSE LGUI_T(TT(0))
+#define ENTER LCTL_T(KC_ENTER)
+#define REPEAT ALT_REP
 
 enum unicode_names {
     AE, AE_CAP, UE, UE_CAP, OE, OE_CAP, SS,
@@ -57,6 +55,40 @@ const uint32_t unicode_map[] = {
     [SS]     = 0x00DF, // ß
 };
 
+enum custom_keycodes {
+    ALT_REP = SAFE_RANGE,
+    GUI_REP,
+};
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static uint16_t timer;
+
+    switch (keycode) {
+        case ALT_REP:
+            if (record->event.pressed) {
+                timer = timer_read();
+                register_mods(MOD_BIT(KC_LALT));
+            } else {
+                unregister_mods(MOD_BIT(KC_LALT));
+
+                if (timer_elapsed(timer) < TAPPING_TERM) {
+                    uint16_t kc = get_last_keycode();
+                    uint8_t mods = get_last_mods();
+
+                    if (kc != KC_NO) {
+                        uint8_t saved_mods = get_mods();
+
+                        set_mods(mods);
+                        tap_code16(kc);
+                        set_mods(saved_mods);
+                    }
+                }
+            }
+            return false;
+    }
+    return true;
+}
 
 enum layouts {
     BASE = 0,
@@ -154,13 +186,13 @@ const uint16_t PROGMEM combo_del1[]      = {HOME_3, HOME_L, COMBO_END};
 const uint16_t PROGMEM combo_del2[]      = {LSFT(KC_3), HOME_L, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(combo_l_umlaute, OSL(LNUM)),
-    COMBO(combo_l_brcks, OSL(BRACKETS)),
-    COMBO(combo_l_arrow, OSL(NAVIGATION)),
-    COMBO(combo_l_lnum, OSL(LNUM)),
-    COMBO(combo_l_lnumshft, OSL(LNUMSHFT)),
-    COMBO(combo_l_lfun, OSL(LFUN)),
-    COMBO(combo_mouse, TG(MOUSE)),
+    COMBO(combo_l_umlaute, MO(LNUM)),
+    COMBO(combo_l_brcks, MO(BRACKETS)),
+    COMBO(combo_l_arrow, MO(NAVIGATION)),
+    COMBO(combo_l_lnum, MO(LNUM)),
+    COMBO(combo_l_lnumshft, MO(LNUMSHFT)),
+    COMBO(combo_l_lfun, MO(LFUN)),
+    COMBO(combo_mouse, MO(MOUSE)),
 
     COMBO(combo_z_scolon, KC_ESCAPE),
     COMBO(combo_tab, KC_TAB),
