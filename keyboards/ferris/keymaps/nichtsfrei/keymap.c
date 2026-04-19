@@ -39,7 +39,8 @@ void matrix_init_user(void) {
 #define SPACE LSFT_T(KC_SPACE)
 #define BACKBSE LGUI_T(TT(0))
 #define ENTER LCTL_T(KC_ENTER)
-#define REPEAT ALT_REP
+#define REPEAT LALT_T(KC_ESC)
+
 
 enum unicode_names {
     AE, AE_CAP, UE, UE_CAP, OE, OE_CAP, SS,
@@ -55,40 +56,6 @@ const uint32_t unicode_map[] = {
     [SS]     = 0x00DF, // ß
 };
 
-enum custom_keycodes {
-    ALT_REP = SAFE_RANGE,
-    GUI_REP,
-};
-
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    static uint16_t timer;
-
-    switch (keycode) {
-        case ALT_REP:
-            if (record->event.pressed) {
-                timer = timer_read();
-                register_mods(MOD_BIT(KC_LALT));
-            } else {
-                unregister_mods(MOD_BIT(KC_LALT));
-
-                if (timer_elapsed(timer) < TAPPING_TERM) {
-                    uint16_t kc = get_last_keycode();
-                    uint8_t mods = get_last_mods();
-
-                    if (kc != KC_NO) {
-                        uint8_t saved_mods = get_mods();
-
-                        set_mods(mods);
-                        tap_code16(kc);
-                        set_mods(saved_mods);
-                    }
-                }
-            }
-            return false;
-    }
-    return true;
-}
 
 enum layouts {
     BASE = 0,
@@ -118,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BRACKETS] = LAYOUT(
     KC_TILDE, KC_PERCENT, KC_PIPE, KC_DOUBLE_QUOTE, KC_CIRC,     KC_PLUS,  KC_RPRN, KC_RBRC, KC_RCBR, KC_UNDS,
     KC_GRAVE, KC_AT, KC_BACKSLASH, KC_QUOTE, KC_DOLLAR,          KC_EQUAL, KC_LPRN, KC_LBRC, KC_LCBR, KC_MINUS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_PIPE, KC_BACKSLASH, KC_TRNS, KC_DOUBLE_QUOTE, KC_QUOTE,
     KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
   ),
 
@@ -164,7 +131,6 @@ const uint16_t PROGMEM combo_l_lnum[]    = {HOME_J, HOME_K, COMBO_END};
 const uint16_t PROGMEM combo_l_lnumshft[]    = {HOME_L, HOME_K, COMBO_END};
 const uint16_t PROGMEM combo_l_lfun[]    = {HOME_L, HOME_SCLN, COMBO_END};
 
-
 const uint16_t PROGMEM combo_semicolon_p[] = {HOME_SCLN, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_l_o[]         = {HOME_L, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_k_i[]         = {HOME_K, KC_I, COMBO_END};
@@ -173,7 +139,7 @@ const uint16_t PROGMEM combo_j_u[]         = {HOME_J, KC_U, COMBO_END};
 const uint16_t PROGMEM combo_h_y[]         = {KC_H, KC_Y, COMBO_END};
 const uint16_t PROGMEM combo_a_q[]         = {HOME_A, KC_Q, COMBO_END};
 
-const uint16_t PROGMEM combo_z_scolon[] = {KC_Z, HOME_SCLN, COMBO_END};
+const uint16_t PROGMEM combo_esc[] = {KC_Z, HOME_SCLN, COMBO_END};
 const uint16_t PROGMEM combo_tab[] = {HOME_F, HOME_J, COMBO_END};
 const uint16_t PROGMEM combo_enter[] = {HOME_SCLN, HOME_A, COMBO_END};
 
@@ -181,11 +147,15 @@ const uint16_t PROGMEM combo_bspc[]      = {HOME_D, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_bspc1[]      = {HOME_3, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_bspc2[]      = {LSFT(KC_3), KC_H, COMBO_END};
 
-const uint16_t PROGMEM combo_del[]      = {HOME_D, HOME_L, COMBO_END};
+const uint16_t PROGMEM combo_del[]      = {HOME_D, KC_SLASH, COMBO_END};
 const uint16_t PROGMEM combo_del1[]      = {HOME_3, HOME_L, COMBO_END};
 const uint16_t PROGMEM combo_del2[]      = {LSFT(KC_3), HOME_L, COMBO_END};
 
 combo_t key_combos[] = {
+    COMBO(combo_esc, KC_ESCAPE),
+    COMBO(combo_enter, KC_ENTER),
+    COMBO(combo_tab, KC_TAB),
+
     COMBO(combo_l_umlaute, MO(LNUM)),
     COMBO(combo_l_brcks, MO(BRACKETS)),
     COMBO(combo_l_arrow, MO(NAVIGATION)),
@@ -194,17 +164,12 @@ combo_t key_combos[] = {
     COMBO(combo_l_lfun, MO(LFUN)),
     COMBO(combo_mouse, MO(MOUSE)),
 
-    COMBO(combo_z_scolon, KC_ESCAPE),
-    COMBO(combo_tab, KC_TAB),
-
     COMBO(combo_bspc, KC_BSPC),
     COMBO(combo_bspc1, KC_BSPC),
     COMBO(combo_bspc2, KC_BSPC),
     COMBO(combo_del, KC_DELETE),
     COMBO(combo_del1, KC_DELETE),
     COMBO(combo_del2, KC_DELETE),
-
-    COMBO(combo_enter, KC_ENTER),
 
     COMBO(combo_semicolon_p, KC_EQUAL),
     COMBO(combo_l_o, KC_MINUS),
@@ -215,27 +180,10 @@ combo_t key_combos[] = {
     COMBO(combo_a_q, KC_GRAVE),
 };
 
-
-static layer_state_t send_state(layer_state_t state) {
-    uint8_t data[32] = {0};
-    data[0]          = 'L';
-    data[1]          = 1;
-    data[31]         = get_highest_layer(state);
-    raw_hid_send(data, 32);
-    return state;
-}
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-  return send_state(state);
-}
-
-layer_state_t default_layer_state_set_user(layer_state_t state) {
-    return send_state(state);
-}
-
-
-void raw_hid_receive(uint8_t *data, uint8_t length) {
-    if (data[0] == 'L') {
-        send_state(layer_state);
+uint16_t get_combo_term(uint16_t index, combo_t *combo) {
+    switch (combo->keycode) {
+        case KC_ESC:
+            return 150;
     }
+    return COMBO_TERM;
 }

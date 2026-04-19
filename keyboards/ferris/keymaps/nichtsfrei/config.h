@@ -5,5 +5,7 @@
 
 #undef TAPPING_TERM
 #define TAPPING_TERM 175
+#define COMBO_TERM 20
 
+#define COMBO_TERM_PER_COMBO
 #define NO_SUSPEND_POWER_DOWN
