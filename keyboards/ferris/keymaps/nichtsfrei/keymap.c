@@ -13,33 +13,42 @@ void matrix_init_user(void) {
 }
 
 
+
 // Left-hand home row
-#define HOME_A KC_A
-#define HOME_S KC_S
-#define HOME_D KC_D
-#define HOME_F KC_F
+#define HOME_A LGUI_T(KC_A)
+#define HOME_S LALT_T(KC_S)
+#define HOME_D LCTL_T(KC_D)
+#define HOME_F LSFT_T(KC_F)
 
-#define HOME_F1 KC_F1
-#define HOME_F2 KC_F2
-#define HOME_F3 KC_F3
-#define HOME_F4 KC_F4
+#define HOME_F1 LGUI_T(KC_F1)
+#define HOME_F2 LALT_T(KC_F2)
+#define HOME_F3 LCTL_T(KC_F3)
+#define HOME_F4 LSFT_T(KC_F4)
 
-
-#define HOME_1 KC_1
-#define HOME_2 KC_2
-#define HOME_3 KC_3
-#define HOME_4 KC_4
+#define HOME_1 LGUI_T(KC_1)
+#define HOME_2 LALT_T(KC_2)
+#define HOME_3 LCTL_T(KC_3)
+#define HOME_4 LSFT_T(KC_4)
 
 // Right-hand home row
-#define HOME_J KC_J
-#define HOME_K KC_K
-#define HOME_L KC_L
-#define HOME_SCLN KC_SCLN
+#define HOME_J LSFT_T(KC_J)
+#define HOME_K RCTL_T(KC_K)
+#define HOME_L RALT_T(KC_L)
+#define HOME_SCLN RGUI_T(KC_SCLN)
 
+#define HOME_F7 LSFT_T(KC_F7)
+#define HOME_F8 RCTL_T(KC_F8)
+#define HOME_F9 RALT_T(KC_F9)
+#define HOME_F10 RGUI_T(KC_F10)
+
+#define HOME_7 LSFT_T(KC_7)
+#define HOME_8 RCTL_T(KC_8)
+#define HOME_9 RALT_T(KC_9)
+#define HOME_0 RGUI_T(KC_0)
+
+// thumbs
 #define SPACE LSFT_T(KC_SPACE)
-#define BACKBSE LGUI_T(TT(0))
 #define ENTER LCTL_T(KC_ENTER)
-#define REPEAT LALT_T(KC_ESC)
 
 
 enum unicode_names {
@@ -60,12 +69,15 @@ const uint32_t unicode_map[] = {
 enum layouts {
     BASE = 0,
     MOUSE,
+    LAYER,
+    NUMBER,
+    FUNCTION,
     // Special layer that should not be circled
     BRACKETS,
+    REMOVE,
     NAVIGATION,
     LNUM,
     LNUMSHFT,
-    LFUN,
 };
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -73,64 +85,75 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_Q, KC_W, KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O, KC_P,
     HOME_A, HOME_S, HOME_D, HOME_F, KC_G ,   KC_H, HOME_J, HOME_K, HOME_L, HOME_SCLN,
     KC_Z, KC_X, KC_C, KC_V, KC_B   ,   KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH,
-    BACKBSE, SPACE,   ENTER, REPEAT
+    OSL(LAYER), SPACE,   ENTER, OSL(LAYER)
+  ),
+
+// dunno if I prefer NUYMBER off LNUM and LNUMSHFT yet
+ [LAYER] = LAYOUT(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    TO(NUMBER), MO(REMOVE), MO(NAVIGATION), MO(BRACKETS), TO(MOUSE),          KC_TRNS, MO(LNUM), MO(LNUMSHFT), KC_TRNS, KC_TRNS,
+    TO(FUNCTION), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
   ),
   [MOUSE] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                                                      QK_MOUSE_WHEEL_LEFT, QK_MOUSE_WHEEL_DOWN, QK_MOUSE_WHEEL_UP, QK_MOUSE_WHEEL_RIGHT, KC_TRNS,
     QK_MOUSE_BUTTON_1, QK_MOUSE_BUTTON_2, QK_MOUSE_BUTTON_3, QK_MOUSE_BUTTON_4, QK_MOUSE_BUTTON_5,          QK_MOUSE_CURSOR_LEFT, QK_MOUSE_CURSOR_DOWN, QK_MOUSE_CURSOR_UP, QK_MOUSE_CURSOR_RIGHT, KC_TRNS,
     QK_MOUSE_ACCELERATION_0, QK_MOUSE_ACCELERATION_1, QK_MOUSE_ACCELERATION_2, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
-  ),
-  // Here are special layer defined
-  [BRACKETS] = LAYOUT(
-    KC_TILDE, KC_PERCENT, KC_PIPE, KC_DOUBLE_QUOTE, KC_CIRC,     KC_PLUS,  KC_RPRN, KC_RBRC, KC_RCBR, KC_UNDS,
-    KC_GRAVE, KC_AT, KC_BACKSLASH, KC_QUOTE, KC_DOLLAR,          KC_EQUAL, KC_LPRN, KC_LBRC, KC_LCBR, KC_MINUS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_PIPE, KC_BACKSLASH, KC_TRNS, KC_DOUBLE_QUOTE, KC_QUOTE,
-    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
   ),
 
+ [NUMBER] = LAYOUT(
+    KC_GRAVE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_BACKSLASH, KC_QUOTE, KC_LBRC, KC_RBRC,
+    HOME_1, HOME_2, HOME_3, HOME_4, KC_5,                 KC_6, HOME_7, HOME_8, HOME_9, HOME_0,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_MINUS, KC_EQUAL, KC_TRNS, KC_TRNS, KC_TRNS,
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
+  ),
+ [FUNCTION] = LAYOUT(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_F12, KC_F11,
+    HOME_F1, HOME_F2, HOME_F3, HOME_F4, KC_F5,            KC_F6, HOME_F7, HOME_F8, HOME_F9, HOME_F10,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_MINUS, KC_EQUAL, KC_TRNS, KC_TRNS, KC_TRNS,
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
+  ),
+
+
+  [REMOVE] = LAYOUT(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   LCTL(KC_BSPC), KC_TRNS, KC_RBRC, LCTL(KC_DELETE), KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_BSPC, KC_TRNS, KC_TRNS, KC_DELETE, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   LALT(KC_BSPC) , KC_TRNS, KC_TRNS, LALT(KC_DELETE),KC_TRNS,
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
+  ),
+  [BRACKETS] = LAYOUT(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_DELETE, KC_RPRN, KC_RBRC, KC_RCBR, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_BSPC, KC_LPRN, KC_LBRC, KC_LCBR, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, UM(SS), UP(AE, AE_CAP), UP(UE, UE_CAP), UP(OE, OE_CAP),
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
+  ),
   [NAVIGATION] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
   ),
 
 
   [LNUM] = LAYOUT(
-    KC_6, KC_7, KC_8, KC_9, KC_0,                         KC_TRNS, KC_TRNS, KC_TRNS,        KC_TRNS,        KC_TRNS,
-    HOME_1, HOME_2, HOME_3, HOME_4, KC_5,                 KC_TRNS, UM(SS) , UP(AE, AE_CAP), UP(UE, UE_CAP), UP(OE, OE_CAP),
+    KC_6, KC_7, KC_8, KC_9, KC_0,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_1, KC_2, KC_3, KC_4, KC_5,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
-  ),
-
-  [LFUN] = LAYOUT(
-    KC_F6, KC_F7, KC_F8, KC_F9, KC_F10,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    HOME_F1, HOME_F2, HOME_F3, HOME_F4, KC_F5,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_F11, KC_F12, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
   ),
 
   [LNUMSHFT] = LAYOUT(
     LSFT(KC_6), LSFT(KC_7), LSFT(KC_8), LSFT(KC_9), LSFT(KC_0),                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     LSFT(KC_1), LSFT(KC_2), LSFT(KC_3), LSFT(KC_4), LSFT(KC_5),                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS,                                              KC_TRNS, KC_TRNS
+    TO(0), KC_TRNS,   KC_TRNS, TO(0)
   ),
 
 };
 
 
 // clang-format off
-const uint16_t PROGMEM combo_l_umlaute[]  = {HOME_A, HOME_S, COMBO_END};
-const uint16_t PROGMEM combo_l_arrow[]  = {HOME_S, HOME_D, COMBO_END};
-const uint16_t PROGMEM combo_l_brcks[]    = {HOME_D, HOME_F, COMBO_END};
-const uint16_t PROGMEM combo_mouse[]    = {SPACE, ENTER, COMBO_END};
-
-const uint16_t PROGMEM combo_l_lnum[]    = {HOME_J, HOME_K, COMBO_END};
-const uint16_t PROGMEM combo_l_lnumshft[]    = {HOME_L, HOME_K, COMBO_END};
-const uint16_t PROGMEM combo_l_lfun[]    = {HOME_L, HOME_SCLN, COMBO_END};
-
 const uint16_t PROGMEM combo_semicolon_p[] = {HOME_SCLN, KC_P, COMBO_END};
 const uint16_t PROGMEM combo_l_o[]         = {HOME_L, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_k_i[]         = {HOME_K, KC_I, COMBO_END};
@@ -143,33 +166,10 @@ const uint16_t PROGMEM combo_esc[] = {KC_Z, HOME_SCLN, COMBO_END};
 const uint16_t PROGMEM combo_tab[] = {HOME_F, HOME_J, COMBO_END};
 const uint16_t PROGMEM combo_enter[] = {HOME_SCLN, HOME_A, COMBO_END};
 
-const uint16_t PROGMEM combo_bspc[]      = {HOME_D, KC_H, COMBO_END};
-const uint16_t PROGMEM combo_bspc1[]      = {HOME_3, KC_H, COMBO_END};
-const uint16_t PROGMEM combo_bspc2[]      = {LSFT(KC_3), KC_H, COMBO_END};
-
-const uint16_t PROGMEM combo_del[]      = {HOME_D, KC_SLASH, COMBO_END};
-const uint16_t PROGMEM combo_del1[]      = {HOME_3, HOME_L, COMBO_END};
-const uint16_t PROGMEM combo_del2[]      = {LSFT(KC_3), HOME_L, COMBO_END};
-
 combo_t key_combos[] = {
     COMBO(combo_esc, KC_ESCAPE),
     COMBO(combo_enter, KC_ENTER),
     COMBO(combo_tab, KC_TAB),
-
-    COMBO(combo_l_umlaute, MO(LNUM)),
-    COMBO(combo_l_brcks, MO(BRACKETS)),
-    COMBO(combo_l_arrow, MO(NAVIGATION)),
-    COMBO(combo_l_lnum, MO(LNUM)),
-    COMBO(combo_l_lnumshft, MO(LNUMSHFT)),
-    COMBO(combo_l_lfun, MO(LFUN)),
-    COMBO(combo_mouse, MO(MOUSE)),
-
-    COMBO(combo_bspc, KC_BSPC),
-    COMBO(combo_bspc1, KC_BSPC),
-    COMBO(combo_bspc2, KC_BSPC),
-    COMBO(combo_del, KC_DELETE),
-    COMBO(combo_del1, KC_DELETE),
-    COMBO(combo_del2, KC_DELETE),
 
     COMBO(combo_semicolon_p, KC_EQUAL),
     COMBO(combo_l_o, KC_MINUS),
